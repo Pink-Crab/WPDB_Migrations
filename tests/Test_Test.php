@@ -11,7 +11,7 @@ namespace PinkCrab\Hook_Subscriber\Tests;
 
 use PHPUnit\Framework\TestCase;
 
-class Test_On_Single_Hook extends TestCase {
+class Test_Test extends TestCase {
 
 	/**
 	 * Test none deferred can accept 20 args if neeed.
