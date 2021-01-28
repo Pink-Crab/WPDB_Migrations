@@ -5,7 +5,8 @@ Abstract class for handling database migrations in the PinkCrab plugin framework
 ![alt text](https://img.shields.io/badge/Current_Version-0.2.0-yellow.svg?style=flat " ") 
 [![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)]()
 
-![](https://github.com/Pink-Crab/WP_DB_Migration/workflows/PinkCrab_GitHub_CI/badge.svg " ")![alt text](https://img.shields.io/badge/PHPStan-level%208-brightgreen.svg?style=flat " ")
+![](https://github.com/Pink-Crab/WP_DB_Migration/workflows/PinkCrab_GitHub_CI/badge.svg " ")
+![alt text](https://img.shields.io/badge/PHPStan-level%208-brightgreen.svg?style=flat " ")
 ![alt text](https://img.shields.io/badge/WP_PHPUnit-V5-brightgreen.svg?style=flat " ")
 ![alt text](https://img.shields.io/badge/PHPCS-WP_Extra-brightgreen.svg?style=flat " ")
 
