@@ -1,4 +1,4 @@
-name: Pink_Crab_GitHub_CI
+name: PinkCrab_GitHub_CI
 
 on:
   push:
