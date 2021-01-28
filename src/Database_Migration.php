@@ -18,10 +18,10 @@ declare(strict_types=1);
  *
  * @author Glynn Quelch <glynn.quelch@gmail.com>
  * @license http://www.opensource.org/licenses/mit-license.html  MIT License
- * @package PinkCrab\Core\Registration
+ * @package PinkCrab\DB_Migration
  */
 
-namespace PinkCrab\Core\Registerables;
+namespace PinkCrab\DB_Migration;
 
 use Exception;
 use PinkCrab\Table_Builder\Interfaces\SQL_Builder;
@@ -55,6 +55,9 @@ abstract class Database_Migration {
 	public function __construct( SQL_Builder $builder, wpdb $wpdb ) {
 		$this->builder = $builder;
 		$this->wpdb    = $wpdb;
+
+		// Set the schema.
+		$this->set_schema();
 	}
 
 	/**
@@ -70,25 +73,40 @@ abstract class Database_Migration {
 	 *
 	 * @return void
 	 */
-	protected function after_creation(): void {}
+	protected function post_up(): void {}
 
 	/**
 	 * Used to create the table.
 	 *
 	 * @return void
 	 */
-	public function execute() {
-		// Set the schema.
-		$this->set_schema();
+	final public function up(): void {
 
 		if ( ! is_a( $this->schema, SQL_Schema::class ) ) {
 			throw new Exception( 'No valid schema suppled' );
 		}
 
+		// Run table through builder.
 		$this->builder->build( $this->schema );
 
 		// Allow hook in create inital data.
-		$this->after_creation();
+		$this->post_up();
+	}
+
+	/**
+	 * Called on taredown.
+	 *
+	 * @return void
+	 */
+	final public function down(): void {
+
+		if ( ! is_a( $this->schema, SQL_Schema::class ) ) {
+			throw new Exception( 'No valid schema suppled' );
+		}
+
+		$this->wpdb->get_results(
+			"DROP TABLE IF EXISTS {$this->schema->get_table_name()};" // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		);
 	}
 
 
