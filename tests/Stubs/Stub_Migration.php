@@ -61,6 +61,22 @@ class Stub_Migration extends Database_Migration {
 	}
 
 	/**
+	 * Returns the data to seed the table.
+	 *
+	 * @return array
+	 */
+	public function seed(): array {
+		return array(
+			array(
+				'user'         => 'alpha',
+				'filters'      => 'bravo',
+				'date_created' => date( 'Y-m-d H:i:s', time() ),
+				'last_update'  => date( 'Y-m-d H:i:s', time() ),
+			)
+		);
+	}
+
+	/**
 	 * Called to changed the schema for update test.
 	 *
 	 * @return void
