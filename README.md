@@ -18,7 +18,10 @@ Abstract class for handling database migrations in the PinkCrab plugin framework
 
 Requires PinkCrab Table Builder Composer and WordPress.
 
+Compatable with version 0.3.* of the (WPDB Table Builder)[https://github.com/Pink-Crab/WPDB-Table-Builder]
+
 Works with PHP versions 7.1, 7.2, 7.3 & 7.4
+
 
 ## Installation
 
@@ -28,6 +31,7 @@ $ composer require pinkcrab/wp-db-migrations
 
 ## Changelog
 
+* 0.3.0 - Updated to reflect the new version of the WPDB Table Builder.
 * 0.2.0 - Extracted from the PinkCrab Framework v0.1.0 registerables package.
 
 

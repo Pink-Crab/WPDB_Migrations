@@ -9,33 +9,37 @@ declare(strict_types=1);
 
 namespace PinkCrab\DB_Migration\Tests\Stubs;
 
-use PinkCrab\Table_Builder\Table_Schema;
+use PinkCrab\Table_Builder\Schema;
 use PinkCrab\DB_Migration\Database_Migration;
 
 class Stub_Migration extends Database_Migration {
 
 	public function set_schema(): void {
-		$this->schema = Table_Schema::create( 'test_table' )
-			->column( 'id' )
+		
+		// Create table
+		$this->schema = new Schema('test_table', function(Schema $schema): void{
+			$schema->column( 'id' )
 				->type( 'int' )
 				->length( 11 )
-				->auto_increment()
+				->auto_increment();
 
-			->column( 'user' )
-				->type( 'tinytext' )
-				->default( '' )
-
-			->column( 'filters' )
+			$schema->column( 'user' )
 				->type( 'text' )
-				->default( '' )
-			->column( 'date_created' )
-				->type( 'DATETIME' )
-				->nullable( false )
+				->default( '' );
 
-			->column( 'last_update' )
+			$schema->column( 'filters' )
+				->type( 'text' )
+				->default( '' );
+			$schema->column( 'date_created' )
 				->type( 'DATETIME' )
-				->nullable( false )
-			->primary( 'id' );
+				->nullable( false );
+
+			$schema->column( 'last_update' )
+				->type( 'DATETIME' )
+				->nullable( false );
+			
+			$schema->index('id')->primary();
+		});
 	}
 
 	/**
@@ -62,28 +66,30 @@ class Stub_Migration extends Database_Migration {
 	 * @return void
 	 */
 	public function change_schema() {
-		$this->schema = Table_Schema::create( 'test_table' )
-			->column( 'id' )
+		// Create table
+		$this->schema = new Schema('test_table', function(Schema $schema): void{
+			$schema->column( 'id' )
 				->type( 'int' )
 				->length( 11 )
-				->auto_increment()
-			->primary( 'id' )
+				->auto_increment();
 
-			->column( 'username' )
-				->type( 'tinytext' )
-				->default( '' )
-
-			->column( 'foo' )
+			$schema->column( 'username' )
 				->type( 'text' )
-				->default( '' )
+				->default( '' );
 
-			->column( 'date_created' )
-				->type( 'DATETIME' )
-				->nullable( false )
-
-			->column( 'last_update' )
+			$schema->column( 'foo' )
+				->type( 'text' )
+				->default( '' );
+			$schema->column( 'date_created' )
 				->type( 'DATETIME' )
 				->nullable( false );
+
+			$schema->column( 'last_update' )
+				->type( 'DATETIME' )
+				->nullable( false );
+			
+			$schema->index('id')->primary();
+		});
 	}
 
 	/**

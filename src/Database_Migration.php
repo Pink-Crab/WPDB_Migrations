@@ -24,8 +24,10 @@ declare(strict_types=1);
 namespace PinkCrab\DB_Migration;
 
 use Exception;
-use PinkCrab\Table_Builder\Interfaces\SQL_Builder;
-use PinkCrab\Table_Builder\Interfaces\SQL_Schema;
+use PinkCrab\Table_Builder\Schema;
+use PinkCrab\Table_Builder\Builder;
+
+
 use wpdb;
 
 abstract class Database_Migration {
@@ -34,14 +36,14 @@ abstract class Database_Migration {
 	/**
 	 * The table builder.
 	 *
-	 * @var SQL_Builder
+	 * @var Builder
 	 */
 	protected $builder;
 
 	/**
 	 * The tables schema.
 	 *
-	 * @var SQL_Schema
+	 * @var Schema
 	 */
 	protected $schema;
 
@@ -52,7 +54,7 @@ abstract class Database_Migration {
 	 */
 	protected $wpdb;
 
-	public function __construct( SQL_Builder $builder, wpdb $wpdb ) {
+	public function __construct( Builder $builder, wpdb $wpdb ) {
 		$this->builder = $builder;
 		$this->wpdb    = $wpdb;
 
@@ -82,12 +84,12 @@ abstract class Database_Migration {
 	 */
 	final public function up(): void {
 
-		if ( ! is_a( $this->schema, SQL_Schema::class ) ) {
+		if ( ! is_a( $this->schema, Schema::class ) ) {
 			throw new Exception( 'No valid schema suppled' );
 		}
 
 		// Run table through builder.
-		$this->builder->build( $this->schema );
+		$this->builder->create_table( $this->schema );
 
 		// Allow hook in create inital data.
 		$this->post_up();
@@ -100,7 +102,7 @@ abstract class Database_Migration {
 	 */
 	final public function down(): void {
 
-		if ( ! is_a( $this->schema, SQL_Schema::class ) ) {
+		if ( ! is_a( $this->schema, Schema::class ) ) {
 			throw new Exception( 'No valid schema suppled' );
 		}
 
