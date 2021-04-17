@@ -24,55 +24,173 @@ declare(strict_types=1);
 
 namespace PinkCrab\DB_Migration\Log;
 
-use DateTime;
-use JsonSerializable;
 use DateTimeImmutable;
+use PinkCrab\Table_Builder\Schema;
 
-class Log implements JsonSerializable {
-
-    
-    /**
-     * The table name
-     *
-     * @var string
-     */
-    protected $table_name;
-
-    /**
-     * Has of the table columns
-     *
-     * @var string
-     */
-    protected $column_hash;
-
-    /**
-     * Date the migration was created on    
-     *
-     * @var DateTimeImmutable
-     */
-    protected $created_on;
-
-    /**
-     * Date the migration was last updated
-     *
-     * @var DateTimeImmutable
-     */
-    protected $updated_on;
-
-    public function __construct(string $table_name, string $hash, ) {
-        $this->var = $var;
-    }
+class Migration {
 
 
-    public function jsonSerialize()
-    {
-        return (object)[
-            'table_name' => $this->table_name,
-            'column_hash' => $this->column_hash,
-            'created_on' => $this->created_on->format(DateTime::ISO8601),
-            'updated_on' => $this->updated_on->format(DateTime::ISO8601),
-        ];
-    }
+	/**
+	 * The table name
+	 *
+	 * @var string
+	 */
+	protected $table_name;
 
+	/**
+	 * Has of the table columns
+	 *
+	 * @var string
+	 */
+	protected $schema_hash;
 
+	/**
+	 * Denotes if the table has been seeded with data.
+	 *
+	 * @var bool
+	 */
+	protected $seeded = false;
+
+	/**
+	 * Date the migration was created on
+	 *
+	 * @var DateTimeImmutable
+	 */
+	protected $created_on;
+
+	/**
+	 * Date the migration was last updated
+	 *
+	 * @var DateTimeImmutable
+	 */
+	protected $updated_on;
+
+	public function __construct(
+		string $table_name,
+		string $schema_hash,
+		bool $seeded,
+		DateTimeImmutable $created_on,
+		?DateTimeImmutable $updated_on = null
+	) {
+		$this->table_name  = $table_name;
+		$this->schema_hash = $schema_hash;
+		$this->seeded      = $seeded;
+		$this->created_on  = $created_on;
+		$this->updated_on  = $updated_on ?? $created_on;
+	}
+
+	/** NAMED CONSTRUCTORS */
+
+	/**
+	 * Creates a new Migration record.
+	 *
+	 * @param string $table_name
+	 * @param \PinkCrab\Table_Builder\Schema $schema
+	 * @return self
+	 */
+	public static function new_from_schema( string $table_name, Schema $schema ): self {
+		return new self(
+			$table_name,
+			self::compose_column_hash( $schema ),
+			false,
+			new DateTimeImmutable(),
+			new DateTimeImmutable()
+		);
+	}
+
+	/**
+	 * Returns a new instance with the defined updated schema and updated data
+	 *
+	 * @param \DateTimeImmutable|null $updated_on
+	 * @return self
+	 */
+	public function as_updated( Schema $schema, ?DateTimeImmutable $updated_on = null ): self {
+		return new self(
+			$this->table_name(),
+			self::compose_column_hash( $schema ),
+			$this->is_seeded(),
+			$this->created_on(),
+			$updated_on ?? new DateTimeImmutable()
+		);
+	}
+
+	/**
+	 * Returns a new instace of itself, marked as seeded.
+	 *
+	 * @param \DateTimeImmutable|null $updated_on
+	 * @return self
+	 */
+	public function as_seeded( ?DateTimeImmutable $updated_on = null ): self {
+		return new self(
+			$this->table_name(),
+			$this->schema_hash(),
+			true,
+			$this->created_on(),
+			$updated_on ?? new DateTimeImmutable()
+		);
+	}
+
+	/**
+	 * Generates the column hash from the tables schema.
+	 *
+	 * @param \PinkCrab\Table_Builder\Schema $schema
+	 * @return string
+	 */
+	public static function compose_column_hash( Schema $schema ): string {
+		$export = array(
+			'name'         => $schema->get_table_name(),
+			'columns'      => $schema->get_columns(),
+			'indexes'      => $schema->get_indexes(),
+			'foreign_keys' => $schema->get_foreign_keys(),
+		);
+
+		return md5( json_encode( $export ) ?: $schema->get_table_name() );
+	}
+
+	/** GETTERS */
+
+	/**
+	 * Get the table name
+	 *
+	 * @return string
+	 */
+	public function table_name(): string {
+		return $this->table_name;
+	}
+
+	/**
+	 * Get has of the table columns
+	 *
+	 * @return string
+	 */
+	public function schema_hash(): string {
+		return $this->schema_hash;
+	}
+
+	/**
+	 * Get date the migration was last updated
+	 *
+	 * @return DateTimeImmutable
+	 */
+	public function updated_on(): DateTimeImmutable {
+		return $this->updated_on;
+	}
+
+	/**
+	 * Get date the migration was created on
+	 *
+	 * @return DateTimeImmutable
+	 */
+	public function created_on(): DateTimeImmutable {
+		return $this->created_on;
+	}
+
+	/**
+	 * Get denotes if the table has been seeded with data.
+	 *
+	 * @return bool
+	 */
+	public function is_seeded(): bool {
+		return $this->seeded;
+	}
 }
