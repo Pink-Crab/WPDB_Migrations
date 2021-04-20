@@ -68,6 +68,15 @@ class Migration_Manager {
 	}
 
 	/**
+	 * Returns access to the migration log.
+	 *
+	 * @return \PinkCrab\DB_Migration\Migration_Log_Manager
+	 */
+	public function migation_log(): Migration_Log_Manager {
+		return $this->migration_log;
+	}
+
+	/**
 	 * Adds a migration to the collection.
 	 *
 	 * @param  \PinkCrab\DB_Migration\Database_Migration $migration
@@ -105,7 +114,7 @@ class Migration_Manager {
 		);
 
 		// Upsert Tables.
-		foreach ( $to_create as $table_name => $migration ) {
+		foreach ( $to_create as $migration ) {
 			$result = $this->builder->create_table( $migration->get_schema() );
 			if ( $result === true ) {
 				$this->migration_log->upsert_migration( $migration->get_schema() );
@@ -135,7 +144,7 @@ class Migration_Manager {
 
 		$seeder = new Migration_Seeder( $this->wpdb );
 
-		foreach ( $to_seed as $table_name => $migration ) {
+		foreach ( $to_seed as $migration ) {
 			$row = $seeder->seed( $migration->get_schema(), $migration->get_seeds() );
 			if ( count( $row ) !== 0 ) {
 				$this->migration_log->mark_table_seeded( $migration->get_schema() );
@@ -152,6 +161,27 @@ class Migration_Manager {
 	 * @return self
 	 */
 	public function drop_tables( string ...$exlcude_table ): self {
+		// Remove exlcluded tables.
+		$to_seed = array_filter(
+			$this->migrations,
+			function( Database_Migration $migration ) use ( $exlcude_table ): bool {
+				return ! in_array( $migration->get_table_name(), $exlcude_table, true );
+			}
+		);
+
+		foreach ( $to_seed as $migration ) {
+			$this->wpdb->get_results(
+				\sprintf( 'DROP TABLE IF EXISTS %s', esc_sql( $migration->get_table_name() ) )
+			);
+
+			// Throw exception if fails.
+			if ( $this->wpdb->last_error !== '' ) {
+				throw Migration_Exception::failed_to_drop_table( $this->wpdb->last_error, $schema->get_table_name() );
+			}
+
+			// Remove mitation from log.
+			$this->migration_log->remove_migration( $migration->get_schema() );
+		}
 
 		return $this;
 	}

@@ -169,6 +169,21 @@ class Migration_Log_Manager {
 	}
 
 	/**
+	 * Removes a migration from the log based on its schema.
+	 *
+	 * @param \PinkCrab\Table_Builder\Schema $schema
+	 * @return self
+	 */
+	public function remove_migration( Schema $schema ): self {
+		if ( $this->has_migration( $schema ) ) {
+			unset( $this->migration_details[ $schema->get_table_name() ] );
+
+			$this->save();
+		}
+		return $this;
+	}
+
+	/**
 	 * If the table has not already been seeded, update the to denote it has.
 	 *
 	 * @param \PinkCrab\Table_Builder\Schema $schema

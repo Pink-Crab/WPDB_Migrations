@@ -95,7 +95,7 @@ class Test_Migration_Manager extends WP_UnitTestCase {
 		$manager->create_tables( $bar_migration->get_table_name() );
 
 		// Get log and check all are set.
-		$log = Objects::get_property( $manager, 'migration_log' );
+		$log = $manager->migation_log();
 		$this->assertTrue( $log->has_migration( $foo_migration->get_schema() ) );
 		$this->assertFalse( $log->has_migration( $bar_migration->get_schema() ) );
 	}
@@ -109,7 +109,7 @@ class Test_Migration_Manager extends WP_UnitTestCase {
 		$manager->create_tables();
 		$manager->seed_tables();
 
-		$log = Objects::get_property( $manager, 'migration_log' );
+		$log = $manager->migation_log();
 		$this->assertTrue( $log->is_seeded( $foo_migration->get_schema() ) );
 	}
 }
