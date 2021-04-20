@@ -27,8 +27,8 @@ namespace PinkCrab\DB_Migration;
 use wpdb;
 use PinkCrab\Table_Builder\Schema;
 use PinkCrab\Table_Builder\Builder;
-use PinkCrab\DB_Migration\Migration_Log_Manager;
 use PinkCrab\DB_Migration\Database_Migration;
+use PinkCrab\DB_Migration\Migration_Log_Manager;
 
 class Migration_Manager {
 
