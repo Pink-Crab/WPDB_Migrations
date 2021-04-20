@@ -3,8 +3,12 @@
 declare(strict_types=1);
 
 /**
- * Tests for the Migration manager.
- * @author GLynn Quelch <glynn.quelch@gmail.com>
+ * Intergration tests for the Migaration Manager Service
+ *
+ * Run Create, Seed and Drop
+ *
+ * @since 0.3.0
+ * @author Glynn Quelch <glynn.quelch@gmail.com>
  */
 
 namespace PinkCrab\DB_Migration\Tests;
@@ -36,9 +40,9 @@ class Test_Intergration_Tests extends WP_UnitTestCase {
 		// Check foo table created.
 		$foo_details = $wpdb->get_results( "SHOW COLUMNS FROM {$foo_migration->get_table_name()};" );
 		$this->assertCount( 2, $foo_details );
-		
-        // Check foo table has fields.
-        $this->assertNotEmpty(
+
+		// Check foo table has fields.
+		$this->assertNotEmpty(
 			array_filter(
 				$foo_details,
 				function( \stdClass $col ): bool {
@@ -58,8 +62,8 @@ class Test_Intergration_Tests extends WP_UnitTestCase {
 		// Check bar table created.
 		$bar_details = $wpdb->get_results( "SHOW COLUMNS FROM {$bar_migration->get_table_name()};" );
 		$this->assertCount( 1, $bar_details );
-        
-        // Check bar table has fields.
+
+		// Check bar table has fields.
 		$this->assertNotEmpty(
 			array_filter(
 				$bar_details,
