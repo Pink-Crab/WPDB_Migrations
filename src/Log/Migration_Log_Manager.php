@@ -43,7 +43,7 @@ class Migration_Log_Manager {
 	/**
 	 * Current migration details
 	 *
-	 * @var array<Migration>
+	 * @var array<Migration_Log>
 	 */
 	protected $migration_details = array();
 
@@ -90,7 +90,7 @@ class Migration_Log_Manager {
 	/**
 	 * Gets a migration log based on its name
 	 *
-	 * @return \PinkCrab\DB_Migration\Log\Migration|null
+	 * @return \PinkCrab\DB_Migration\Log\Migration_Log|null
 	 */
 	public function get_migration( Schema $schema ): ?Migration_Log {
 		return $this->has_migration( $schema )
@@ -175,7 +175,7 @@ class Migration_Log_Manager {
 	 * @return self
 	 */
 	public function mark_table_seeded( Schema $schema ): self {
-        if ( ! $this->is_seeded( $schema ) ) {
+		if ( ! $this->is_seeded( $schema ) ) {
 			$this->migration_details[ $schema->get_table_name() ] =
 				$this->migration_details[ $schema->get_table_name() ]->as_seeded();
 

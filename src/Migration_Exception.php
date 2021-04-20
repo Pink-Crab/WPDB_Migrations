@@ -53,7 +53,7 @@ class Migration_Exception extends Exception {
 	 */
 	public static function failed_to_insert_seed( string $wpdb_error, string $table_name ): Migration_Exception {
 		return new Migration_Exception(
-			\sprintf( 'Could not insert seed into %s, failed with error', $table_name, $wpdb_error ),
+			\sprintf( 'Could not insert seed into %s, failed with error: %s', $table_name, $wpdb_error ),
 			2
 		);
 	}

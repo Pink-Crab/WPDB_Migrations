@@ -29,9 +29,14 @@ use PinkCrab\Table_Builder\Schema;
 
 class Migration_Seeder {
 
+	/**
+	 * WPDB isntance
+	 *
+	 * @var wpdb
+	 */
 	protected $wpdb;
 
-	public function __construct( wpdb $wpdb = null ) {
+	public function __construct( wpdb $wpdb ) {
 		$this->wpdb = $wpdb;
 	}
 
@@ -56,7 +61,7 @@ class Migration_Seeder {
 	 * Inserts a row of seed data.
 	 *
 	 * @param \PinkCrab\Table_Builder\Schema $schema
-	 * @param array $seed
+	 * @param array<array<string, mixed>> $seed
 	 * @return int The new row ID.
 	 * @throws Migration_Exception
 	 */
@@ -99,7 +104,7 @@ class Migration_Seeder {
 			throw Migration_Exception::seed_column_doesnt_exist( $column, $schema->get_table_name() );
 		}
 
-		return $this->column_type_format( $schema_columns[ $column ]->get_type() );
+		return $this->column_type_format( $schema_columns[ $column ]->get_type() ?? '' );
 	}
 
 	/**
