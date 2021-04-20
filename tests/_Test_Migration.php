@@ -10,12 +10,15 @@ declare(strict_types=1);
 namespace PinkCrab\DB_Migration\Tests;
 
 use Exception;
-use PHPUnit\Framework\TestCase;
+use WP_UnitTestCase;
+use PinkCrab\Table_Builder\Builder;
 use PinkCrab\PHPUnit_Helpers\Arrays;
-use PinkCrab\Table_Builder\Builders\DB_Delta;
+use PinkCrab\FunctionConstructors\Arrays as Arr;
 use PinkCrab\DB_Migration\Tests\Stubs\Stub_Migration;
+use PinkCrab\Table_Builder\Engines\WPDB_DB_Delta\DB_Delta_Engine;
 
-class Test_Test extends TestCase {
+
+class Test_Migration extends WP_UnitTestCase {
 
 	protected $table_name = 'test_table';
 
@@ -66,7 +69,10 @@ class Test_Test extends TestCase {
 	 */
 	public function test_table_is_created(): void {
 		// Build table on UP
-		$migration = new Stub_Migration( new DB_Delta( $this->wpdb ), $this->wpdb );
+		$migration = new Stub_Migration( 
+			new Builder(new DB_Delta_Engine($this->wpdb)), 
+			$this->wpdb 
+		);
 		$migration->up();
 
 		$this->assertNotEmpty( $this->check_has_values_created_on_post_up() );
@@ -80,12 +86,12 @@ class Test_Test extends TestCase {
 		$expected = array( 'id', 'user', 'filters', 'date_created', 'last_update' );
 		foreach ( $expected as $column_name ) {
 			$this->assertNotEmpty(
-				Arrays::filter_first(
-					$table_details,
+				Arr\filterFirst(
 					function( $col ) use ( $column_name ) {
 						return $col->Field === $column_name;
 					}
 				)
+				($table_details)
 			);
 		}
 
@@ -98,13 +104,15 @@ class Test_Test extends TestCase {
 	 * @return void
 	 */
 	public function test_table_is_updated() {
-		$migration = new Stub_Migration( new DB_Delta( $this->wpdb ), $this->wpdb );
+		$migration = new Stub_Migration( 
+			new Builder(new DB_Delta_Engine($this->wpdb)), 
+			$this->wpdb 
+		);
 		$migration->up();
 
 		$this->assertNotEmpty( $this->check_has_values_created_on_post_up() );
 
 		$table_details = $this->wpdb->get_results( "SHOW COLUMNS FROM {$this->table_name};" );
-
 		// Check we have the 5 columns expected.
 		$this->assertCount( 5, $table_details );
 
@@ -118,12 +126,12 @@ class Test_Test extends TestCase {
 		$expected = array( 'id', 'user', 'filters', 'date_created', 'last_update', 'username', 'foo' );
 		foreach ( $expected as $column_name ) {
 			$this->assertNotEmpty(
-				Arrays::filter_first(
-					$table_details,
+				Arr\filterFirst(
 					function( $col ) use ( $column_name ) {
 						return $col->Field === $column_name;
 					}
 				)
+				($table_details)
 			);
 		}
 		$this->drop_test_table();
@@ -136,7 +144,10 @@ class Test_Test extends TestCase {
 	 */
 	public function test_throws_exception_with_no_schema(): void {
 		$this->expectException( Exception::class );
-		$migration = new Stub_Migration( new DB_Delta( $this->wpdb ), $this->wpdb );
+		$migration = new Stub_Migration( 
+			new Builder(new DB_Delta_Engine($this->wpdb)), 
+			$this->wpdb 
+		);
 
 		// Set the schema to null.
 		$migration->edit_schema(
@@ -155,7 +166,10 @@ class Test_Test extends TestCase {
 	 * @return void
 	 */
 	public function test_table_droppd_on_down(): void {
-		$migration = new Stub_Migration( new DB_Delta( $this->wpdb ), $this->wpdb );
+		$migration = new Stub_Migration( 
+			new Builder(new DB_Delta_Engine($this->wpdb)), 
+			$this->wpdb 
+		);
 		$migration->up();
 
 		$this->assertNotEmpty( $this->check_has_values_created_on_post_up() );
@@ -176,7 +190,10 @@ class Test_Test extends TestCase {
 		$this->expectException( Exception::class );
 
 		// Create the table.
-		$migration = new Stub_Migration( new DB_Delta( $this->wpdb ), $this->wpdb );
+		$migration = new Stub_Migration( 
+			new Builder(new DB_Delta_Engine($this->wpdb)), 
+			$this->wpdb 
+		);
 		$migration->up();
 
 		$this->assertNotEmpty( $this->check_has_values_created_on_post_up() );

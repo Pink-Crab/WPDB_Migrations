@@ -16,9 +16,9 @@ Abstract class for handling database migrations in the PinkCrab plugin framework
 
 ## Requirements
 
-Requires PinkCrab Table Builder, Composer and WordPress.
+Requires PinkCrab Table Builder Composer and WordPress.
 
-Compatable with version 0.3.* of the [WPDB Table Builder](https://github.com/Pink-Crab/WPDB-Table-Builder)
+Compatable with version 0.3.* of the (WPDB Table Builder)[https://github.com/Pink-Crab/WPDB-Table-Builder]
 
 Works with PHP versions 7.1, 7.2, 7.3 & 7.4
 
@@ -37,8 +37,6 @@ Creates a wrapper around the WPDB_Table_Builder to make it easier to create Migr
 
 You will need to create your Migrations using the ```Database_Migration``` abstract class. 
 
-**[Read the Schema documentation](https://github.com/Pink-Crab/WPDB-Table-Builder/blob/master/docs/Schema.md)**
-
 ```php
 <?php
 
@@ -52,11 +50,10 @@ class Foo_Migration extends Database_Migration {
 
     // Define the tables schema
     public function schema( Schema $schema_config ): void {
-        $schema_config->column('id')->unsigned_int(12)->auto_increment()
-        $schema_config->index('id')->primary();
-
+        $schema_config->column('id')->int(11)->unsigned()->auto_increment();
         $schema_config->column('column1')->text()->nullable();
         $schema_config->column('column2')->text()->nullable();
+        // include rest of schema definiton.
     }
 
     // Add all data to be seeded 
@@ -76,13 +73,9 @@ class Foo_Migration extends Database_Migration {
 }
 ```
 
-
 Once you have your Migrations created it is a case of using the Migration_Manager to handle the creation, seeding and eventaul dropping of the table.
 
-**[Read the Builder documentation](https://github.com/Pink-Crab/WPDB-Table-Builder)**
-
 ```php
-<?php
 
 global $wpdb; // You can access this however you please.
 
@@ -120,42 +113,3 @@ Thrown when attempting to insert seed data, but wpdb returns an error.
 > Messge: *Could not insert seed into {table name}, failed with error {wpdb error}*
 > 
 > Error Code: 2
-
-
-## Use With Plugins
-
-The best way to use the Migration service is as part of your plugins activation/uninstall process. This would ensure that all tables are created and seeded when the plugin is activated and all tables are dropped when the plugin is uninstalled.
-
-Thanks to the Migration_Log, tables will only be reprocessed if the schema has changed and data can only be seeded once. So if you plan to add seed data in for later versions of your plugin, they can be added when ready.
-
-You can also hook the Migration_Manager into any custom plugin update systems. So long as you use the same Migration Log key (achme_plugin_migrations in example below), the log will be persisted in the options table.
-
-```php
-// file plugin.php
-
-global $wpdb;
-$engine  = new DB_Delta_Engine($wpdb); // https://github.com/Pink-Crab/WPDB-Table-Builder
-$builder = new Builder($engine); // https://github.com/Pink-Crab/WPDB-Table-Builder
-
-$migrations = new Migration_Manager( $builder, $wpdb, "achme_plugin_migrations");
-
-// Add your migrations
-$migrations->add_migration(new Some_Migration());
-$migrations->add_migration(new Some_Other_Migration());
-
-// Build and seed all tables using register_activation_hook
-register_activation_hook( __FILE__, function() use ($migrations){
-    // Create tables
-	$migrations->create_tables();
-
-	// Create seeds
-	$migrations->seed_tables();
-
-	// Register unistall action.
-	register_uninstall_hook( __FILE__, function() use ($migrations){
-		$migrations->remove_tables();
-	});
-	
-});
-```
-Obviously this can be structured however you wish.
