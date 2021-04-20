@@ -153,7 +153,7 @@ register_activation_hook( __FILE__, function() use ($migrations){
 
 	// Register unistall action.
 	register_uninstall_hook( __FILE__, function() use ($migrations){
-		$migrations->remove_tables();
+		$migrations->drop_tables();
 	});
 	
 });

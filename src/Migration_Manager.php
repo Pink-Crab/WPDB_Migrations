@@ -151,7 +151,7 @@ class Migration_Manager {
 	 * @param string ...$exlcude_table Table names to exclude.
 	 * @return self
 	 */
-	public function remove_tables( string ...$exlcude_table ): self {
+	public function drop_tables( string ...$exlcude_table ): self {
 
 		return $this;
 	}
