@@ -145,7 +145,7 @@ $migrations->add_migration(new Some_Other_Migration());
 
 // Build and seed all tables using register_activation_hook
 register_activation_hook( __FILE__, function() use ($migrations){
-    // Create tables
+	// Create tables
 	$migrations->create_tables();
 
 	// Create seeds
