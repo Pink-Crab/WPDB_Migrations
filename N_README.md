@@ -16,9 +16,9 @@ Abstract class for handling database migrations in the PinkCrab plugin framework
 
 ## Requirements
 
-Requires PinkCrab Table Builder, Composer and WordPress.
+Requires PinkCrab Table Builder Composer and WordPress.
 
-Compatable with version 0.3.* of the [WPDB Table Builder](https://github.com/Pink-Crab/WPDB-Table-Builder)
+Compatable with version 0.3.* of the (WPDB Table Builder)[https://github.com/Pink-Crab/WPDB-Table-Builder]
 
 Works with PHP versions 7.1, 7.2, 7.3 & 7.4
 
@@ -36,8 +36,6 @@ Creates a wrapper around the WPDB_Table_Builder to make it easier to create Migr
 ## How to use
 
 You will need to create your Migrations using the ```Database_Migration``` abstract class. 
-
-**[Read the Schema documentation](https://github.com/Pink-Crab/WPDB-Table-Builder/blob/master/docs/Schema.md)**
 
 ```php
 <?php
@@ -75,13 +73,9 @@ class Foo_Migration extends Database_Migration {
 }
 ```
 
-
 Once you have your Migrations created it is a case of using the Migration_Manager to handle the creation, seeding and eventaul dropping of the table.
 
-**[Read the Builder documentation](https://github.com/Pink-Crab/WPDB-Table-Builder)**
-
 ```php
-<?php
 
 global $wpdb; // You can access this however you please.
 

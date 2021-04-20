@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Holds a log of the last table constructed
+ * Model for migration log.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -22,156 +22,174 @@ declare(strict_types=1);
  * @package PinkCrab\DB_Migration
  */
 
-namespace PinkCrab\DB_Migration;
+namespace PinkCrab\DB_Migration\Log;
 
-use stdClass;
-use Exception;
+use DateTimeImmutable;
 use PinkCrab\Table_Builder\Schema;
-use PinkCrab\DB_Migration\Log\Migration;
 
 class Migration_Log {
 
+
 	/**
-	 * The key used to hold all migration dates
-	 * Can be shared between multiple plugins.
+	 * The table name
 	 *
 	 * @var string
 	 */
-	protected $option_key;
+	protected $table_name;
 
 	/**
-	 * Current migration details
+	 * Has of the table columns
 	 *
-	 * @var array<Migration>
+	 * @var string
 	 */
-	protected $migration_details = array();
+	protected $schema_hash;
 
-	public function __construct( string $option_key = null ) {
-		$this->option_key = $option_key ?? 'pink_migration_log';
-		$this->set_migration_details();
+	/**
+	 * Denotes if the table has been seeded with data.
+	 *
+	 * @var bool
+	 */
+	protected $seeded = false;
+
+	/**
+	 * Date the migration was created on
+	 *
+	 * @var DateTimeImmutable
+	 */
+	protected $created_on;
+
+	/**
+	 * Date the migration was last updated
+	 *
+	 * @var DateTimeImmutable
+	 */
+	protected $updated_on;
+
+	public function __construct(
+		string $table_name,
+		string $schema_hash,
+		bool $seeded,
+		DateTimeImmutable $created_on,
+		?DateTimeImmutable $updated_on = null
+	) {
+		$this->table_name  = $table_name;
+		$this->schema_hash = $schema_hash;
+		$this->seeded      = $seeded;
+		$this->created_on  = $created_on;
+		$this->updated_on  = $updated_on ?? $created_on;
 	}
 
-	/**
-	 * Sets the migration details held in optiosn
-	 *
-	 * @return void
-	 */
-	protected function set_migration_details(): void {
-		$migrations = get_option( $this->option_key, null );
-
-		if ( $migrations === null ) {
-			return;
-		}
-
-		try {
-			$migrations = \unserialize( $migrations );
-		} catch ( \Throwable $th ) {
-			throw new Exception( 'Migration details as unserialize from options, failed to be decoded: ' . $th->getMessage() );
-		}
-
-		$this->migration_details = $migrations;
-	}
+	/** NAMED CONSTRUCTORS */
 
 	/**
-	 * Checks if a table has been migrated
+	 * Creates a new Migration record.
 	 *
-	 * @param string $table_name
-	 * @return boolean
-	 */
-	public function has_migration( string $table_name ): bool {
-		return array_key_exists( $table_name, $this->migration_details );
-	}
-
-	/**
-	 * Checks if the define table has been seeded.
-	 *
-	 * @param string $table_name
-	 * @return bool
-	 */
-	public function is_seeded( string $table_name ): bool {
-		return $this->has_migration( $table_name )
-		&& $this->migration_details[ $table_name ]->is_seeded();
-	}
-
-	/**
-	 * Checks if the passed schema's hash matches the existing schema hash.
-	 *
-	 * @param string $table_name
-	 * @param \PinkCrab\Table_Builder\Schema $schema
-	 * @return bool
-	 */
-	public function check_hash( string $table_name, Schema $schema ): bool {
-		// If table doesnt exist, return false;
-		if ( $this->has_migration( $table_name ) ) {
-			return false;
-		}
-
-		$schema_hash = Migration::compose_column_hash( $schema );
-		$migration   = $this->migration_details[ $table_name ];
-
-		return strcmp( $schema_hash, $migration->schema_hash() ) === 0;
-	}
-
-	/**
-	 * Upserts a migration based on its schema.
-	 *
-	 * - Upates if Migration exists, but schema is different.
-	 * - Creates if Migration doesnt exist.
-	 *
-	 * Only updates the schema is actually upserted.
-	 *
-	 * @param string $table_name
 	 * @param \PinkCrab\Table_Builder\Schema $schema
 	 * @return self
 	 */
-	public function upsert_migration( string $table_name, Schema $schema ): self {
-		// Update if table exists and we have a new schema defined.
-		if ( $this->has_migration( $table_name )
-		&& ! $this->check_hash( $table_name, $schema ) ) {
-			$this->migration_details[ $table_name ] =
-				$this->migration_details[ $table_name ]->as_updated( $schema );
-
-			$this->save();
-		}
-
-		// If a new hash.
-		if ( $this->has_migration( $table_name ) === false ) {
-			$this->migration_details[ $table_name ] =
-				Migration::new_from_schema( $table_name, $schema );
-
-			$this->save();
-		}
-
-		return $this;
+	public static function new_from_schema( Schema $schema ): self {
+		return new self(
+			$schema->get_table_name(),
+			self::compose_column_hash( $schema ),
+			false,
+			new DateTimeImmutable(),
+			new DateTimeImmutable()
+		);
 	}
 
 	/**
-	 * If the table has not already been seeded, update the to denote it has.
+	 * Returns a new instance with the defined updated schema and updated data
 	 *
-	 * @param string $table_name
+	 * @param \DateTimeImmutable|null $updated_on
 	 * @return self
 	 */
-	public function mark_table_seeded( string $table_name ): self {
-
-		if ( ! $this->is_seeded( $table_name ) ) {
-			$this->migration_details[ $table_name ] =
-				$this->migration_details[ $table_name ]->as_seeded();
-
-			$this->save();
-		}
-
-		return $this;
+	public function as_updated( Schema $schema, ?DateTimeImmutable $updated_on = null ): self {
+		return new self(
+			$this->table_name(),
+			self::compose_column_hash( $schema ),
+			$this->is_seeded(),
+			$this->created_on(),
+			$updated_on ?? new DateTimeImmutable()
+		);
 	}
 
 	/**
-	 * Saves the current migration details
+	 * Returns a new instace of itself, marked as seeded.
 	 *
-	 * @return void
+	 * @param \DateTimeImmutable|null $updated_on
+	 * @return self
 	 */
-	public function save(): void {
-		\update_option( $this->option_key, serialize( $this->migration_details ) );
+	public function as_seeded( ?DateTimeImmutable $updated_on = null ): self {
+		return new self(
+			$this->table_name(),
+			$this->schema_hash(),
+			true,
+			$this->created_on(),
+			$updated_on ?? new DateTimeImmutable()
+		);
 	}
 
+	/**
+	 * Generates the column hash from the tables schema.
+	 *
+	 * @param \PinkCrab\Table_Builder\Schema $schema
+	 * @return string
+	 */
+	public static function compose_column_hash( Schema $schema ): string {
+		$export = array(
+			'name'         => $schema->get_table_name(),
+			'columns'      => $schema->get_columns(),
+			'indexes'      => $schema->get_indexes(),
+			'foreign_keys' => $schema->get_foreign_keys(),
+		);
 
+		return md5( \serialize( $export ) ?: $schema->get_table_name() );  // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize, Serialised to preserve types
+	}
 
+	/** GETTERS */
+
+	/**
+	 * Get the table name
+	 *
+	 * @return string
+	 */
+	public function table_name(): string {
+		return $this->table_name;
+	}
+
+	/**
+	 * Get has of the table columns
+	 *
+	 * @return string
+	 */
+	public function schema_hash(): string {
+		return $this->schema_hash;
+	}
+
+	/**
+	 * Get date the migration was last updated
+	 *
+	 * @return DateTimeImmutable
+	 */
+	public function updated_on(): DateTimeImmutable {
+		return $this->updated_on;
+	}
+
+	/**
+	 * Get date the migration was created on
+	 *
+	 * @return DateTimeImmutable
+	 */
+	public function created_on(): DateTimeImmutable {
+		return $this->created_on;
+	}
+
+	/**
+	 * Get denotes if the table has been seeded with data.
+	 *
+	 * @return bool
+	 */
+	public function is_seeded(): bool {
+		return $this->seeded;
+	}
 }

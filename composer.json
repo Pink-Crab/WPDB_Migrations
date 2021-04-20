@@ -40,8 +40,8 @@
         "pinkcrab/table_builder": "0.3.*"
     },
     "scripts": {
-        "test": "phpunit --coverage-clover clover.xml --testdox",
-        "coverage": "phpunit --coverage-html coverage-report  --testdox",
+        "test": "phpunit --coverage-clover clover.xml --testdox  --colors=always",
+        "coverage": "phpunit --coverage-html coverage-report  --testdox --colors=always",
         "analyse": "vendor/bin/phpstan analyse src -l8",
         "sniff": "vendor/bin/phpcs src/ -v",
         "all": "composer test && composer analyse && composer sniff"

@@ -18,7 +18,7 @@ use PinkCrab\DB_Migration\Tests\Stubs\Stub_Migration;
 use PinkCrab\Table_Builder\Engines\WPDB_DB_Delta\DB_Delta_Engine;
 
 
-class Test_Test extends WP_UnitTestCase {
+class Test_Migration extends WP_UnitTestCase {
 
 	protected $table_name = 'test_table';
 
