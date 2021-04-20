@@ -23,12 +23,10 @@ declare(strict_types=1);
 
 namespace PinkCrab\DB_Migration;
 
+use wpdb;
 use Exception;
 use PinkCrab\Table_Builder\Schema;
 use PinkCrab\Table_Builder\Builder;
-
-
-use wpdb;
 
 abstract class Database_Migration {
 
