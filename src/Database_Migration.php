@@ -93,6 +93,11 @@ abstract class Database_Migration {
 		return $this->seed_data;
 	}
 
+	/**
+	 * Returns the definied table name.
+	 *
+	 * @return string
+	 */
 	public function get_table_name(): string {
 		return $this->table_name;
 	}

@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1618931840">
-  <project timestamp="1618931840">
+<coverage generated="1618932781">
+  <project timestamp="1618932781">
     <package name="PinkCrab\DB_Migration">
       <file name="/shared/httpd/php/htdocs/pc_modules/WP_DB_Migration/src/Database_Migration.php">
         <class name="PinkCrab\DB_Migration\Database_Migration" namespace="PinkCrab\DB_Migration" fullPackage="Database">
           <metrics complexity="6" methods="5" coveredmethods="5" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="7" elements="12" coveredelements="12"/>
         </class>
-        <line num="59" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="5"/>
-        <line num="60" type="stmt" count="5"/>
-        <line num="61" type="stmt" count="5"/>
-        <line num="62" type="stmt" count="5"/>
-        <line num="78" type="method" name="seed" visibility="public" complexity="1" crap="1" count="2"/>
-        <line num="79" type="stmt" count="2"/>
-        <line num="87" type="method" name="get_schema" visibility="public" complexity="1" crap="1" count="5"/>
-        <line num="88" type="stmt" count="5"/>
-        <line num="96" type="method" name="get_seeds" visibility="public" complexity="1" crap="1" count="2"/>
-        <line num="97" type="stmt" count="2"/>
-        <line num="100" type="method" name="get_table_name" visibility="public" complexity="1" crap="1" count="3"/>
-        <line num="101" type="stmt" count="3"/>
-        <metrics loc="104" ncloc="45" classes="1" methods="5" coveredmethods="5" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="7" elements="12" coveredelements="12"/>
+        <line num="55" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="5"/>
+        <line num="56" type="stmt" count="5"/>
+        <line num="57" type="stmt" count="5"/>
+        <line num="58" type="stmt" count="5"/>
+        <line num="74" type="method" name="seed" visibility="public" complexity="1" crap="1" count="2"/>
+        <line num="75" type="stmt" count="2"/>
+        <line num="83" type="method" name="get_schema" visibility="public" complexity="1" crap="1" count="5"/>
+        <line num="84" type="stmt" count="5"/>
+        <line num="92" type="method" name="get_seeds" visibility="public" complexity="1" crap="1" count="2"/>
+        <line num="93" type="stmt" count="2"/>
+        <line num="101" type="method" name="get_table_name" visibility="public" complexity="1" crap="1" count="3"/>
+        <line num="102" type="stmt" count="3"/>
+        <metrics loc="105" ncloc="41" classes="1" methods="5" coveredmethods="5" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="7" elements="12" coveredelements="12"/>
       </file>
       <file name="/shared/httpd/php/htdocs/pc_modules/WP_DB_Migration/src/Log/Migration_Log_Manager.php">
         <class name="PinkCrab\DB_Migration\Migration_Log_Manager" namespace="PinkCrab\DB_Migration" fullPackage="Migration.Log">
@@ -252,6 +252,6 @@
         <metrics loc="195" ncloc="98" classes="1" methods="10" coveredmethods="10" conditionals="0" coveredconditionals="0" statements="34" coveredstatements="34" elements="44" coveredelements="44"/>
       </file>
     </package>
-    <metrics files="6" loc="875" ncloc="448" classes="6" methods="38" coveredmethods="37" conditionals="0" coveredconditionals="0" statements="173" coveredstatements="172" elements="211" coveredelements="209"/>
+    <metrics files="6" loc="876" ncloc="444" classes="6" methods="38" coveredmethods="37" conditionals="0" coveredconditionals="0" statements="173" coveredstatements="172" elements="211" coveredelements="209"/>
   </project>
 </coverage>
