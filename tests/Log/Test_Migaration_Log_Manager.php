@@ -177,6 +177,7 @@ class Test_Migaration_Log_Manager extends WP_UnitTestCase {
 		$this->assertTrue( $log->has_migration( new Schema( 'test_table' ) ) );
 	}
 
+	/** @testdox When a table has been seeded, it should be possible to mark it as seeded in the migration log. */
 	public function test_mark_seeded(): void {
 		$log    = new Migration_Log_Manager( 'test_upsert_min_migration' );
 		$schema = Schema_Provider::migration_log_schema();
@@ -186,6 +187,5 @@ class Test_Migaration_Log_Manager extends WP_UnitTestCase {
 
 		$log->mark_table_seeded( $schema );
 		$this->assertTrue( $log->get_migration( $schema )->is_seeded() );
-
 	}
 }
