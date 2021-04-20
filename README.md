@@ -52,10 +52,11 @@ class Foo_Migration extends Database_Migration {
 
     // Define the tables schema
     public function schema( Schema $schema_config ): void {
-        $schema_config->column('id')->int(11)->unsigned()->auto_increment();
+        $schema_config->column('id')->unsigned_int(12)->auto_increment()
         $schema_config->column('column1')->text()->nullable();
         $schema_config->column('column2')->text()->nullable();
-        // include rest of schema definiton.
+        
+		$schema_config->index('id')->primary();
     }
 
     // Add all data to be seeded 
