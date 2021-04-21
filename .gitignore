@@ -1,5 +1,6 @@
 vendor
 composer.lock
 wordpress
-coverage-report
+coverage-report/
 clover.xml
+vendor/
