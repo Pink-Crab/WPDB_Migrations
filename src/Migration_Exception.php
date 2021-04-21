@@ -58,9 +58,16 @@ class Migration_Exception extends Exception {
 		);
 	}
 
-    public static function failed_to_drop_table( string $wpdb_error, string $table_name ): Migration_Exception {
+	/**
+	 * Exception for failure to drop a table
+	 *
+	 * @param string $table_name
+	 * @return Migration_Exception
+	 * @code 3
+	 */
+	public static function failed_to_drop_table( string $table_name ): Migration_Exception {
 		return new Migration_Exception(
-			\sprintf( 'Failed to drop %d, wpdb generated: %s', $table_name, $wpdb_error ),
+			\sprintf( 'Failed to drop %d', $table_name ),
 			3
 		);
 	}

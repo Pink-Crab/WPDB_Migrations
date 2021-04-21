@@ -105,6 +105,31 @@ $manager->drop_tables('some_table_to_skip');
 ```
 > It is suggested to wrap create_tables, seed_tables and drop_tables in a try/catch as they can throw exceptions.
 
+## Factory
+
+You can create an instance of both a Migration Mananager and Migration Log.
+
+### Factory::manager_with_db_delta(?string $option_key = null, ?wpdb $wpdb = null)
+Can be used to create a manager set with a standard wpdb instance. A custom log option key can be defined and a custom wpdb instance can be used if you wish to use multiple databases.
+```php
+$manager = PinkCrab\DB_Migration\Factory::manager_with_db_delta('achme_migration_log_key', $custom_wpdb);
+```
+
+### Factory::migration_log(?string $option_key = null)
+Creates an instance of the migration log, the option key used in the migration manager can be optionaly passed if a custom value is set.
+```php
+$migration_log = PinkCrab\DB_Migration\Factory::migration_log('achme_migration_log_key');
+```
+
+## Migration Log
+The Migration Manager has an internal log which is serialised and stored as a WP Option. This is used to ensure that tables are only updated when the schema has changed and that only a single seeding of each table can happen. 
+If you need to access the Log, you can either call it from a Migration_Manager instance ```$manager->migration_log();``` or by creating an instance. 
+
+```php
+$log = new Migration_Log_Manager('custom_option_key');
+```
+
+
 ## Exceptions
 
 During the process, mutliple excptions can be thrown, these are all ```PinkCrab\DB_Migration\Migration_Exceptions``` 
@@ -120,6 +145,12 @@ Thrown when attempting to insert seed data, but wpdb returns an error.
 > Messge: *Could not insert seed into {table name}, failed with error {wpdb error}*
 > 
 > Error Code: 2
+
+### failed_to_drop_table()
+Thrown when wpdb produces an error removing a table.
+> Messge: *Failed to drop {table name}*
+> 
+> Error Code: 3
 
 
 ## Use With Plugins

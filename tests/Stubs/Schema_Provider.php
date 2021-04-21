@@ -2,11 +2,6 @@
 
 declare(strict_types=1);
 
-/**
- * Base test case.
- * @author GLynn Quelch <glynn.quelch@gmail.com>
- */
-
 namespace PinkCrab\DB_Migration\Tests\Stubs;
 
 use PinkCrab\Table_Builder\Schema;

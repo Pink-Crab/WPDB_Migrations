@@ -208,7 +208,4 @@ class Migration_Log_Manager {
 	protected function save(): void {
 		\update_option( $this->option_key, serialize( $this->migration_details ) ); // phpcs:ignore
 	}
-
-
-
 }

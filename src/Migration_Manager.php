@@ -170,13 +170,12 @@ class Migration_Manager {
 		);
 
 		foreach ( $to_seed as $migration ) {
-			$this->wpdb->get_results(
-				\sprintf( 'DROP TABLE IF EXISTS %s', esc_sql( $migration->get_table_name() ) )
-			);
+
+			$result = $this->builder->drop_table( $migration->get_schema() );
 
 			// Throw exception if fails.
-			if ( $this->wpdb->last_error !== '' ) {
-				throw Migration_Exception::failed_to_drop_table( $this->wpdb->last_error, $schema->get_table_name() );
+			if ( $result === false ) {
+				throw Migration_Exception::failed_to_drop_table( $migration->get_table_name() );
 			}
 
 			// Remove mitation from log.

@@ -16,7 +16,7 @@ use DateTimeImmutable;
 use PinkCrab\Table_Builder\Schema;
 use PinkCrab\DB_Migration\Log\Migration_Log as Log;
 
-class Test_Migration extends WP_UnitTestCase {
+class Test_Migration_Log extends WP_UnitTestCase {
 
 	/** @testdox It should be possible to get the table name, hash, seeded status and the dates created/updated, from a Migration log. */
 	public function test_getters(): void {
