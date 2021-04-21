@@ -8,12 +8,22 @@
     convertWarningsToExceptions="true"
     >
     <testsuites>
-        <testsuite name="settings_pages">
+        <testsuite name="migrations">
             <directory prefix="Test_" suffix=".php">./tests/</directory>
         </testsuite>
     </testsuites>
 
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./src/</directory>
+        </whitelist>
+    </filter>
+
     <php>
         <env name="WP_PHPUNIT__TESTS_CONFIG" value="tests/wp-config.php" />
     </php>
+
+    <logging>
+        <log type="coverage-clover" target="clover.xml"/>
+    </logging>
 </phpunit>

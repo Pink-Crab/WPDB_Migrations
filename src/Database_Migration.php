@@ -24,90 +24,82 @@ declare(strict_types=1);
 namespace PinkCrab\DB_Migration;
 
 use Exception;
-use PinkCrab\Table_Builder\Interfaces\SQL_Builder;
-use PinkCrab\Table_Builder\Interfaces\SQL_Schema;
-use wpdb;
+use PinkCrab\Table_Builder\Schema;
 
 abstract class Database_Migration {
-
-
-	/**
-	 * The table builder.
-	 *
-	 * @var SQL_Builder
-	 */
-	protected $builder;
 
 	/**
 	 * The tables schema.
 	 *
-	 * @var SQL_Schema
+	 * @var Schema
 	 */
 	protected $schema;
 
 	/**
-	 * Access to wpdb
+	 * The data to be seeded
 	 *
-	 * @var wpdb
+	 * @var array<array<string, mixed>>
 	 */
-	protected $wpdb;
+	protected $seed_data;
 
-	public function __construct( SQL_Builder $builder, wpdb $wpdb ) {
-		$this->builder = $builder;
-		$this->wpdb    = $wpdb;
+	/**
+	 * The tables name
+	 *
+	 * @var string
+	 */
+	protected $table_name = '';
 
-		// Set the schema.
-		$this->set_schema();
+	/**
+	 * @throws Exception If table name not defiend.
+	 */
+	public function __construct() {
+		$this->schema    = new Schema( $this->table_name, array( $this, 'schema' ) );
+		$this->seed_data = $this->seed( array() );
 	}
 
 	/**
-	 * Used to either import or define the schema.
+	 * Defines the schema for the migration.
 	 *
+	 * @param Schema $schema_config
 	 * @return void
 	 */
-	abstract public function set_schema(): void;
+	abstract public function schema( Schema $schema_config ): void;
 
 	/**
-	 * Method is called after the table is created.
-	 * Can be overwritten to insert inital data etc.
+	 * Defines the data to be seeded.
 	 *
-	 * @return void
+	 * @param array<string, mixed> $seeds
+	 * @return array<string, mixed>
 	 */
-	protected function post_up(): void {}
-
-	/**
-	 * Used to create the table.
-	 *
-	 * @return void
-	 */
-	final public function up(): void {
-
-		if ( ! is_a( $this->schema, SQL_Schema::class ) ) {
-			throw new Exception( 'No valid schema suppled' );
-		}
-
-		// Run table through builder.
-		$this->builder->build( $this->schema );
-
-		// Allow hook in create inital data.
-		$this->post_up();
+	public function seed( array $seeds ): array {
+		return $seeds;
 	}
 
 	/**
-	 * Called on taredown.
+	 * Returns the internal schema.
 	 *
-	 * @return void
+	 * @return Schema
 	 */
-	final public function down(): void {
-
-		if ( ! is_a( $this->schema, SQL_Schema::class ) ) {
-			throw new Exception( 'No valid schema suppled' );
-		}
-
-		$this->wpdb->get_results(
-			"DROP TABLE IF EXISTS {$this->schema->get_table_name()};" // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		);
+	public function get_schema(): Schema {
+		return $this->schema;
 	}
 
+	/**
+	 * Returns the current seed data.
+	 *
+	 * @return array<string, mixed>
+	 */
+	public function get_seeds(): array {
+		return $this->seed_data;
+	}
+
+	/**
+	 * Returns the definied table name.
+	 *
+	 * @return string
+	 */
+	public function get_table_name(): string {
+		return $this->table_name;
+	}
 
 }
