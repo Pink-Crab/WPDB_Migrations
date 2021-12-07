@@ -22,10 +22,8 @@ declare(strict_types=1);
  * @package PinkCrab\DB_Migration
  */
 
-namespace PinkCrab\DB_Migration;
+namespace PinkCrab\DB_Migration\Log;
 
-use stdClass;
-use Exception;
 use InvalidArgumentException;
 use PinkCrab\Table_Builder\Schema;
 use PinkCrab\DB_Migration\Log\Migration_Log;

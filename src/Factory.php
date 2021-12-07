@@ -26,7 +26,7 @@ namespace PinkCrab\DB_Migration;
 
 use wpdb;
 use PinkCrab\Table_Builder\Builder;
-use PinkCrab\DB_Migration\Migration_Log_Manager;
+use PinkCrab\DB_Migration\Log\Migration_Log_Manager;
 use PinkCrab\Table_Builder\Engines\WPDB_DB_Delta\DB_Delta_Engine;
 
 class Factory {
@@ -53,7 +53,7 @@ class Factory {
 	 * If no key passed, will use the detault defined in Migration_Log_Manager
 	 *
 	 * @param string|null $option_key
-	 * @return \PinkCrab\DB_Migration\Migration_Log_Manager
+	 * @return \PinkCrab\DB_Migration\Log\Migration_Log_Manager
 	 */
 	public static function migration_log( ?string $option_key = null ): Migration_Log_Manager {
 		return new Migration_Log_Manager( $option_key );

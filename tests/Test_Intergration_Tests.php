@@ -16,7 +16,6 @@ namespace PinkCrab\DB_Migration\Tests;
 use WP_UnitTestCase;
 use PinkCrab\Table_Builder\Builder;
 use PinkCrab\DB_Migration\Migration_Manager;
-use PinkCrab\Table_Builder\Builders\DB_Delta;
 use PinkCrab\DB_Migration\Tests\Stubs\Stub_Migration_Bar;
 use PinkCrab\DB_Migration\Tests\Stubs\Stub_Migration_Foo;
 use PinkCrab\Table_Builder\Engines\WPDB_DB_Delta\DB_Delta_Engine;

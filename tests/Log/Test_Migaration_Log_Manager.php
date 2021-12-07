@@ -18,8 +18,8 @@ use PinkCrab\Table_Builder\Schema;
 use Gin0115\WPUnit_Helpers\Objects;
 use PinkCrab\DB_Migration\Log\Migration;
 use PinkCrab\DB_Migration\Log\Migration_Log;
-use PinkCrab\DB_Migration\Migration_Log_Manager;
 use PinkCrab\DB_Migration\Log\Migration_Log as Log;
+use PinkCrab\DB_Migration\Log\Migration_Log_Manager;
 use PinkCrab\DB_Migration\Tests\Stubs\Schema_Provider;
 
 class Test_Migaration_Log_Manager extends WP_UnitTestCase {

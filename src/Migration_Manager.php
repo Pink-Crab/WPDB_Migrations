@@ -25,10 +25,9 @@ declare(strict_types=1);
 namespace PinkCrab\DB_Migration;
 
 use wpdb;
-use PinkCrab\Table_Builder\Schema;
 use PinkCrab\Table_Builder\Builder;
 use PinkCrab\DB_Migration\Database_Migration;
-use PinkCrab\DB_Migration\Migration_Log_Manager;
+use PinkCrab\DB_Migration\Log\Migration_Log_Manager;
 
 class Migration_Manager {
 
@@ -70,7 +69,7 @@ class Migration_Manager {
 	/**
 	 * Returns access to the migration log.
 	 *
-	 * @return \PinkCrab\DB_Migration\Migration_Log_Manager
+	 * @return \PinkCrab\DB_Migration\Log\Migration_Log_Manager
 	 */
 	public function migation_log(): Migration_Log_Manager {
 		return $this->migration_log;
