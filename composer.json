@@ -40,7 +40,7 @@
     },
     "require": {
         "php": ">=7.1.0",
-        "pinkcrab/table_builder": "0.3.*"
+        "pinkcrab/table_builder": "0.3.* || 1.0.*"
     },
     "scripts": {
         "test": "phpunit --coverage-clover clover.xml --testdox  --colors=always",
