@@ -1,11 +1,11 @@
 # WP_DB_Migration
 System for creating database migrations with WordPress
 
-![alt text](https://img.shields.io/badge/Current_Version-0.3.1-yellow.svg?style=flat " ") 
+![PinkCrab WP DB Migration Version 1.0.0](https://img.shields.io/badge/Current_Version-1.0.0-green.svg?style=flat " ") 
 [![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](https://github.com/ellerbrock/open-source-badge/)
-![](https://github.com/Pink-Crab/Loader/workflows/GitHub_CI/badge.svg " ")
+![](https://github.com/Pink-Crab/WP_DB_Migration/workflows/PinkCrab_GitHub_CI/badge.svg " ")
 [![codecov](https://codecov.io/gh/Pink-Crab/WP_DB_Migration/branch/master/graph/badge.svg)](https://codecov.io/gh/Pink-Crab/WP_DB_Migration)
-
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Pink-Crab/WP_DB_Migration/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Pink-Crab/WP_DB_Migration/?branch=master)
  
 
 ***********************************************
@@ -14,9 +14,11 @@ System for creating database migrations with WordPress
 
 Requires PinkCrab Table Builder, Composer and WordPress.
 
-Compatable with version 0.3.* of the [WPDB Table Builder](https://github.com/Pink-Crab/WPDB-Table-Builder)
+Uses the [WPDB Table Builder](https://github.com/Pink-Crab/WPDB-Table-Builder) library.
 
 Works with PHP versions 7.1, 7.2, 7.3 & 7.4
+
+> If you are using this with the [PinkCrab Perique framework](https://perique.info), please use the [Perique Migrations](https://github.com/Pink-Crab/Perique_Migrations) module.
 
 
 ## Installation
@@ -85,7 +87,7 @@ global $wpdb; // You can access this however you please.
 // See PinkCrab Table Builder for details about the Builder.
 $builder = new Builder(...);
 
-$manager = new Migration_Manager($builder, $wpdb, 'achme_migration_log_key');
+$manager = new Migration_Manager($builder, $wpdb, 'acme_migration_log_key');
 
 // Add all migration to manager
 $manager->add_migration(new Foo_Migration());
@@ -103,18 +105,18 @@ $manager->drop_tables('some_table_to_skip');
 
 ## Factory
 
-You can create an instance of both a Migration Mananager and Migration Log.
+You can create an instance of both a Migration Manager and Migration Log.
 
 ### Factory::manager_with_db_delta(?string $option_key = null, ?wpdb $wpdb = null)
 Can be used to create a manager set with a standard wpdb instance. A custom log option key can be defined and a custom wpdb instance can be used if you wish to use multiple databases.
 ```php
-$manager = PinkCrab\DB_Migration\Factory::manager_with_db_delta('achme_migration_log_key', $custom_wpdb);
+$manager = PinkCrab\DB_Migration\Factory::manager_with_db_delta('acme_migration_log_key', $custom_wpdb);
 ```
 
 ### Factory::migration_log(?string $option_key = null)
-Creates an instance of the migration log, the option key used in the migration manager can be optionaly passed if a custom value is set.
+Creates an instance of the migration log, the option key used in the migration manager can be optionally passed if a custom value is set.
 ```php
-$migration_log = PinkCrab\DB_Migration\Factory::migration_log('achme_migration_log_key');
+$migration_log = PinkCrab\DB_Migration\Factory::migration_log('acme_migration_log_key');
 ```
 
 ## Migration Log
@@ -128,23 +130,23 @@ $log = new Migration_Log_Manager('custom_option_key');
 
 ## Exceptions
 
-During the process, mutliple excptions can be thrown, these are all ```PinkCrab\DB_Migration\Migration_Exceptions``` 
+During the process, multiple exceptions can be thrown, these are all ```PinkCrab\DB_Migration\Migration_Exceptions``` 
 
 ### seed_column_doesnt_exist()
-Thrown when trying get the column data from a schema, where the column doesnt exist.
-> Messge: *Could not find column {column name} in {table name} schema definition*
+Thrown when trying get the column data from a schema, where the column doesn't exist.
+> Message: *Could not find column {column name} in {table name} schema definition*
 > 
 > Error Code: 1
 
 ### failed_to_insert_seed()
 Thrown when attempting to insert seed data, but wpdb returns an error.
-> Messge: *Could not insert seed into {table name}, failed with error {wpdb error}*
+> Message: *Could not insert seed into {table name}, failed with error {wpdb error}*
 > 
 > Error Code: 2
 
 ### failed_to_drop_table()
 Thrown when wpdb produces an error removing a table.
-> Messge: *Failed to drop {table name}*
+> Message: *Failed to drop {table name}*
 > 
 > Error Code: 3
 
@@ -155,7 +157,7 @@ The best way to use the Migration service is as part of your plugins activation/
 
 Thanks to the Migration_Log, tables will only be reprocessed if the schema has changed and data can only be seeded once. So if you plan to add seed data in for later versions of your plugin, they can be added when ready.
 
-You can also hook the Migration_Manager into any custom plugin update systems. So long as you use the same Migration Log key (achme_plugin_migrations in example below), the log will be persisted in the options table.
+You can also hook the Migration_Manager into any custom plugin update systems. So long as you use the same Migration Log key (acme_plugin_migrations in example below), the log will be persisted in the options table.
 
 ```php
 // file plugin.php
@@ -164,7 +166,7 @@ global $wpdb;
 $engine  = new DB_Delta_Engine($wpdb); // https://github.com/Pink-Crab/WPDB-Table-Builder
 $builder = new Builder($engine); // https://github.com/Pink-Crab/WPDB-Table-Builder
 
-$migrations = new Migration_Manager( $builder, $wpdb, "achme_plugin_migrations");
+$migrations = new Migration_Manager( $builder, $wpdb, "acme_plugin_migrations");
 
 // Add your migrations
 $migrations->add_migration(new Some_Migration());
@@ -186,3 +188,11 @@ register_activation_hook( __FILE__, function() use ($migrations){
 });
 ```
 Obviously this can be structured however you wish.
+
+---
+## Change log
+
+* 1.0.0 - Now supports[WPDB Table Builder](https://github.com/Pink-Crab/WPDB-Table-Builder/tree/1.0.0) 1.0.0
+* 0.3.1 - Added Dependabot config
+* 0.3.0 - Migrated from [WPDB Table Builder 0.2](https://github.com/Pink-Crab/WPDB-Table-Builder/tree/0.3.0) to [0.3](https://github.com/Pink-Crab/WPDB-Table-Builder/tree/1.0.0)
+* 0.2.0 - Extracted from the (OLD) PinkCrab Framework v0.1.0 registerables package.
