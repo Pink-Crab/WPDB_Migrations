@@ -1,7 +1,7 @@
 # WP_DB_Migration
 System for creating database migrations with WordPress
 
-![PinkCrab WP DB Migration Version 1.0.0](https://img.shields.io/badge/Current_Version-1.0.0-green.svg?style=flat " ") 
+![PinkCrab WP DB Migration Version 1.0.1](https://img.shields.io/badge/Current_Version-1.0.0-green.svg?style=flat " ") 
 [![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](https://github.com/ellerbrock/open-source-badge/)
 ![](https://github.com/Pink-Crab/WP_DB_Migration/workflows/PinkCrab_GitHub_CI/badge.svg " ")
 [![codecov](https://codecov.io/gh/Pink-Crab/WP_DB_Migration/branch/master/graph/badge.svg)](https://codecov.io/gh/Pink-Crab/WP_DB_Migration)
@@ -192,6 +192,7 @@ Obviously this can be structured however you wish.
 ---
 ## Change log
 
+* 1.0.1 - Allows access to the migration manager log key via `Migration_Log_Manager->get_log_key()` method
 * 1.0.0 - Now supports[WPDB Table Builder](https://github.com/Pink-Crab/WPDB-Table-Builder/tree/1.0.0) 1.0.0
 * 0.3.1 - Added Dependabot config
 * 0.3.0 - Migrated from [WPDB Table Builder 0.2](https://github.com/Pink-Crab/WPDB-Table-Builder/tree/0.3.0) to [0.3](https://github.com/Pink-Crab/WPDB-Table-Builder/tree/1.0.0)
