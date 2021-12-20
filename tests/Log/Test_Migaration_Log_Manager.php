@@ -200,4 +200,11 @@ class Test_Migaration_Log_Manager extends WP_UnitTestCase {
 		$log->remove_migration( $schema );
 		$this->assertFalse( $log->has_migration( $schema ) );
 	}
+
+	/** @testdox It should be possible to access the migration log key. */
+	public function test_can_get_migration_log_key(): void {
+		// With a set value.
+		$log = new Migration_Log_Manager( 'test_can_get_migration_log_key' );
+		$this->assertEquals( 'test_can_get_migration_log_key', $log->get_log_key() );
+	}
 }
