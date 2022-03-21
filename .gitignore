@@ -4,3 +4,4 @@ wordpress
 coverage-report/
 clover.xml
 vendor/
+.phpunit.result.cache
