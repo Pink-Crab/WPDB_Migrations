@@ -70,8 +70,21 @@ class Migration_Manager {
 	 * Returns access to the migration log.
 	 *
 	 * @return \PinkCrab\DB_Migration\Log\Migration_Log_Manager
+	 * @deprecated 1.0.2 Due to a typo
 	 */
 	public function migation_log(): Migration_Log_Manager {
+		return $this->migration_log;
+	}
+
+	/**
+	 * Returns access to the migration log.
+	 *
+	 * Replaces the migration_log() method which has a typo
+	 *
+	 * @return \PinkCrab\DB_Migration\Log\Migration_Log_Manager
+	 * @since 1.0.2
+	 */
+	public function migration_log(): Migration_Log_Manager {
 		return $this->migration_log;
 	}
 

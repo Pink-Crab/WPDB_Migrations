@@ -96,7 +96,7 @@ class Test_Migration_Manager extends WP_UnitTestCase {
 		$manager->create_tables( $bar_migration->get_table_name() );
 
 		// Get log and check all are set.
-		$log = $manager->migation_log();
+		$log = $manager->migration_log();
 		$this->assertTrue( $log->has_migration( $foo_migration->get_schema() ) );
 		$this->assertFalse( $log->has_migration( $bar_migration->get_schema() ) );
 	}
@@ -110,7 +110,7 @@ class Test_Migration_Manager extends WP_UnitTestCase {
 		$manager->create_tables();
 		$manager->seed_tables();
 
-		$log = $manager->migation_log();
+		$log = $manager->migration_log();
 		$this->assertTrue( $log->is_seeded( $foo_migration->get_schema() ) );
 	}
 
@@ -122,12 +122,12 @@ class Test_Migration_Manager extends WP_UnitTestCase {
 
 		$manager->create_tables();
 		// Check table is marked as created.
-		if ( ! $manager->migation_log()->has_migration( $foo_migration->get_schema() ) ) {
+		if ( ! $manager->migration_log()->has_migration( $foo_migration->get_schema() ) ) {
 			$this->fail( 'Migration wasnt marked as created, so cant test if removed. FAILED' );
 		}
 
 		$manager->drop_tables();
-		$this->assertFalse( $manager->migation_log()->has_migration( $foo_migration->get_schema() ) );
+		$this->assertFalse( $manager->migration_log()->has_migration( $foo_migration->get_schema() ) );
 	}
 
 	/** @testdox It should be possible to add table names to be ignored when dropping tables */
@@ -141,7 +141,7 @@ class Test_Migration_Manager extends WP_UnitTestCase {
 
 		$manager->drop_tables( $bar_migration->get_table_name() );
 
-		$log = $manager->migation_log();
+		$log = $manager->migration_log();
 		$this->assertTrue( $log->has_migration( $bar_migration->get_schema() ) );
 		$this->assertFalse( $log->has_migration( $foo_migration->get_schema() ) );
 	}

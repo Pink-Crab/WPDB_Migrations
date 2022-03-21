@@ -33,7 +33,7 @@ class Test_Factory extends WP_UnitTestCase {
 	/** @testdox It should be possible to create a Migration Manager instance using the default option key. */
 	public function test_manager_with_fallback_option_key(): void {
 		$manager = Factory::manager_with_db_delta();
-		$log     = $manager->migation_log();
+		$log     = $manager->migration_log();
 		$this->assertSame(
 			'pinkcrab_migration_log',
 			Objects::get_property( $log, 'option_key' )
@@ -43,7 +43,7 @@ class Test_Factory extends WP_UnitTestCase {
 	/** @testdox It should be possible to create a Migration Manager instance using a custom option key. */
 	public function test_manager_with_custom_option_key(): void {
 		$manager = Factory::manager_with_db_delta( 'custom_option_key' );
-		$log     = $manager->migation_log();
+		$log     = $manager->migration_log();
 		$this->assertSame(
 			'custom_option_key',
 			Objects::get_property( $log, 'option_key' )
