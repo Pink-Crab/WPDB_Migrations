@@ -23,23 +23,22 @@
         }
     },
     "require-dev": {
-        "phpunit/phpunit": "^7.0",
-        "roots/wordpress": "^5.8",
-        "wp-phpunit/wp-phpunit": "^5.8",
-        "symfony/var-dumper": "4.*",
+        "phpunit/phpunit": "^7.0 || ^8.0",
         "phpstan/phpstan": "^1.0",
         "szepeviktor/phpstan-wordpress": "^1.0",
-        "php-stubs/wordpress-stubs": "^5.8.0",
+        "php-stubs/wordpress-stubs": "^5.9.0",
+        "roots/wordpress": "^5.9",
+        "wp-phpunit/wp-phpunit": "^5.9",
         "dealerdirect/phpcodesniffer-composer-installer": "*",
         "wp-coding-standards/wpcs": "*",
         "object-calisthenics/phpcs-calisthenics-rules": "*",
         "yoast/phpunit-polyfills": "^0.2.0 || ^1.0.0",
-        "pinkcrab/perique-framework-core": "^1.0",
+        "symfony/var-dumper": "4.*",
         "gin0115/wpunit-helpers": "~1.0.0"
     },
     "require": {
         "php": ">=7.1.0",
-        "pinkcrab/table_builder": "1.0.*"
+        "pinkcrab/table_builder": "1.*"
     },
     "scripts": {
         "test": "phpunit --coverage-clover clover.xml --testdox  --colors=always",
@@ -48,5 +47,11 @@
         "sniff": "vendor/bin/phpcs src/ -v",
         "all": "composer test && composer analyse && composer sniff"
 
+    },
+    "config": {
+        "allow-plugins": {
+            "roots/wordpress-core-installer": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
     }
 }
