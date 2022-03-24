@@ -207,4 +207,15 @@ class Test_Migaration_Log_Manager extends WP_UnitTestCase {
 		$log = new Migration_Log_Manager( 'test_can_get_migration_log_key' );
 		$this->assertEquals( 'test_can_get_migration_log_key', $log->get_log_key() );
 	}
+
+	/** @testdox It should be possible to clear the log from the log manager. */
+	public function test_can_clear_log(): void {
+		$log    = new Migration_Log_Manager( 'test_can_clear_log' );
+		$schema = Schema_Provider::migration_log_schema();
+		$log->upsert_migration( $schema );
+
+		$this->assertTrue( '' !== get_option( 'test_can_clear_log' ) );
+		$log->clear_log();
+		$this->assertNull( \get_option( 'test_can_clear_log', null ) );
+	}
 }
