@@ -123,7 +123,7 @@ class Migration_Log_Manager {
 	 * @param \PinkCrab\Table_Builder\Schema $schema
 	 * @return bool
 	 */
-	public function check_hash( Schema $schema ): bool {
+	private function check_hash( Schema $schema ): bool {
 		// If table doesnt exist, return false;
 		if ( ! $this->has_migration( $schema ) ) {
 			return false;
@@ -204,7 +204,7 @@ class Migration_Log_Manager {
 	 * @return void
 	 */
 	protected function save(): void {
-		\update_option( $this->option_key, serialize( $this->migration_details ) ); // phpcs:ignore
+		\update_option( $this->option_key, serialize( $this->migration_details ), false ); // phpcs:ignore
 	}
 
 	/**
@@ -214,5 +214,14 @@ class Migration_Log_Manager {
 	 */
 	public function get_log_key(): string {
 		return $this->option_key;
+	}
+
+	/**
+	 * Clears the log from options table
+	 *
+	 * @return void
+	 */
+	public function clear_log(): void {
+		\delete_option( $this->option_key );
 	}
 }
