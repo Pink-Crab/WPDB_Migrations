@@ -123,7 +123,7 @@ class Migration_Log_Manager {
 	 * @param \PinkCrab\Table_Builder\Schema $schema
 	 * @return bool
 	 */
-	public function check_hash( Schema $schema ): bool {
+	private function check_hash( Schema $schema ): bool {
 		// If table doesnt exist, return false;
 		if ( ! $this->has_migration( $schema ) ) {
 			return false;
