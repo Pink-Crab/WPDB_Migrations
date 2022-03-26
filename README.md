@@ -1,11 +1,11 @@
-# WP_DB_Migration
+# WPDB_Migration
 System for creating database migrations with WordPress
 
-![PinkCrab WP DB Migration Version 1.0.1](https://img.shields.io/badge/Current_Version-1.0.1-green.svg?style=flat " ") 
+![PinkCrab WP DB Migration Version 1.0.2](https://img.shields.io/badge/Current_Version-1.0.1-green.svg?style=flat " ") 
 [![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](https://github.com/ellerbrock/open-source-badge/)
 ![](https://github.com/Pink-Crab/WP_DB_Migration/workflows/PinkCrab_GitHub_CI/badge.svg " ")
 [![codecov](https://codecov.io/gh/Pink-Crab/WP_DB_Migration/branch/master/graph/badge.svg)](https://codecov.io/gh/Pink-Crab/WP_DB_Migration)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Pink-Crab/WP_DB_Migration/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Pink-Crab/WP_DB_Migration/?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Pink-Crab/WPDB_Migrations/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Pink-Crab/WPDB_Migrations/?branch=master)
  
 
 ***********************************************
@@ -16,9 +16,12 @@ Requires PinkCrab Table Builder, Composer and WordPress.
 
 Uses the [WPDB Table Builder](https://github.com/Pink-Crab/WPDB-Table-Builder) library.
 
-Works with PHP versions 7.1, 7.2, 7.3 & 7.4
+> **TESTED AGAINST**
+> * PHP 7.1, 7.2, 7.3, 7.4, 8.0 & 8.1
+> * Mysql 5.7, MariaDB 10.2, 10.3, 10.4, 10.5, 10.6 & 10.7
+> * WP5.5, WP5.6, WP5.7, WP5.8 & WP5.9
 
-> If you are using this with the [PinkCrab Perique framework](https://perique.info), please use the [Perique Migrations](https://github.com/Pink-Crab/Perique_Migrations) module.
+****
 
 
 ## Installation
@@ -26,6 +29,8 @@ Works with PHP versions 7.1, 7.2, 7.3 & 7.4
 ``` bash
 $ composer require pinkcrab/wp-db-migrations
 ```
+
+> If you are using this with the [PinkCrab Perique framework](https://perique.info), please use the [Perique Migrations](https://github.com/Pink-Crab/Perique_Migrations) module.
 
 ## Why
 
@@ -75,7 +80,7 @@ class Foo_Migration extends Database_Migration {
 ```
 
 
-Once you have your Migrations created it is a case of using the Migration_Manager to handle the creation, seeding and eventaul dropping of the table.
+Once you have your Migrations created it is a case of using the Migration_Manager to handle the creation, seeding and eventual dropping of the table.
 
 **[Read the Builder documentation](https://github.com/Pink-Crab/WPDB-Table-Builder)**
 
@@ -103,6 +108,9 @@ $manager->drop_tables('some_table_to_skip');
 ```
 > It is suggested to wrap create_tables, seed_tables and drop_tables in a try/catch as they can throw exceptions.
 
+[Reade more about the Migration Manager](/docs/migration-manager.md)
+
+
 ## Factory
 
 You can create an instance of both a Migration Manager and Migration Log.
@@ -127,6 +135,7 @@ If you need to access the Log, you can either call it from a Migration_Manager i
 $log = new Migration_Log_Manager('custom_option_key');
 ```
 
+[Reade more about the Migration Log](/docs/log-manager.md)
 
 ## Exceptions
 
@@ -157,41 +166,16 @@ The best way to use the Migration service is as part of your plugins activation/
 
 Thanks to the Migration_Log, tables will only be reprocessed if the schema has changed and data can only be seeded once. So if you plan to add seed data in for later versions of your plugin, they can be added when ready.
 
-You can also hook the Migration_Manager into any custom plugin update systems. So long as you use the same Migration Log key (acme_plugin_migrations in example below), the log will be persisted in the options table.
+> When working with Foreign Keys, ensure that all base tables are created first, then those that reference it. But when dropping ensure this is done in reverse.  
+  
+  
+> Tables are all created, then all seeded in the same order
 
-```php
-// file plugin.php
-
-global $wpdb;
-$engine  = new DB_Delta_Engine($wpdb); // https://github.com/Pink-Crab/WPDB-Table-Builder
-$builder = new Builder($engine); // https://github.com/Pink-Crab/WPDB-Table-Builder
-
-$migrations = new Migration_Manager( $builder, $wpdb, "acme_plugin_migrations");
-
-// Add your migrations
-$migrations->add_migration(new Some_Migration());
-$migrations->add_migration(new Some_Other_Migration());
-
-// Build and seed all tables using register_activation_hook
-register_activation_hook( __FILE__, function() use ($migrations){
-	// Create tables
-	$migrations->create_tables();
-
-	// Create seeds
-	$migrations->seed_tables();
-
-	// Register unistall action.
-	register_uninstall_hook( __FILE__, function() use ($migrations){
-		$migrations->drop_tables();
-	});
-	
-});
-```
-Obviously this can be structured however you wish.
+[See our example plugin](https://github.com/gin0115/PinkCrab_WPDB_MIgration_Example)
 
 ---
 ## Change log
-
+* 1.0.2 - Updated docs, added in means to clear all Logs from Log Manager and fixed a type with `Migration_Manager::migation_log()` (this method has been deprecated and replace with `Migration_Manager::migration_log()`)
 * 1.0.1 - Allows access to the migration manager log key via `Migration_Log_Manager->get_log_key()` method
 * 1.0.0 - Now supports[WPDB Table Builder](https://github.com/Pink-Crab/WPDB-Table-Builder/tree/1.0.0) 1.0.0
 * 0.3.1 - Added Dependabot config

@@ -70,8 +70,21 @@ class Migration_Manager {
 	 * Returns access to the migration log.
 	 *
 	 * @return \PinkCrab\DB_Migration\Log\Migration_Log_Manager
+	 * @deprecated 1.0.2 Due to a typo
 	 */
 	public function migation_log(): Migration_Log_Manager {
+		return $this->migration_log;
+	}
+
+	/**
+	 * Returns access to the migration log.
+	 *
+	 * Replaces the migration_log() method which has a typo
+	 *
+	 * @return \PinkCrab\DB_Migration\Log\Migration_Log_Manager
+	 * @since 1.0.2
+	 */
+	public function migration_log(): Migration_Log_Manager {
 		return $this->migration_log;
 	}
 
@@ -96,18 +109,18 @@ class Migration_Manager {
 	}
 
 	/**
-	 * Creates all the tables in collection excepct those passed as exlcuded
+	 * Creates all the tables in collection except those passed as excluded
 	 *
-	 * @param string ...$exlcude_table Table names to exclude.
+	 * @param string ...$excluded_table Table names to exclude.
 	 * @return self
 	 */
-	public function create_tables( string ...$exlcude_table ): self {
+	public function create_tables( string ...$excluded_table ): self {
 
-		// Remove exlcluded tables.
+		// Remove excluded tables.
 		$to_create = array_filter(
 			$this->migrations,
-			function( Database_Migration $migration ) use ( $exlcude_table ): bool {
-				return ! in_array( $migration->get_table_name(), $exlcude_table, true )
+			function( Database_Migration $migration ) use ( $excluded_table ): bool {
+				return ! in_array( $migration->get_table_name(), $excluded_table, true )
 				&& $this->migration_log->can_migrate( $migration->get_schema() );
 			}
 		);
@@ -125,18 +138,18 @@ class Migration_Manager {
 	}
 
 	/**
-	 * Seeds all the tables in collection excepct those passed as exlcuded
+	 * Seeds all the tables in collection except those passed as excluded
 	 *
-	 * @param string ...$exlcude_table Table names to exclude.
+	 * @param string ...$excluded_table Table names to exclude.
 	 * @return self
 	 */
-	public function seed_tables( string ...$exlcude_table ): self {
+	public function seed_tables( string ...$excluded_table ): self {
 
-		// Remove exlcluded tables.
+		// Remove excluded tables.
 		$to_seed = array_filter(
 			$this->migrations,
-			function( Database_Migration $migration ) use ( $exlcude_table ): bool {
-				return ! in_array( $migration->get_table_name(), $exlcude_table, true )
+			function( Database_Migration $migration ) use ( $excluded_table ): bool {
+				return ! in_array( $migration->get_table_name(), $excluded_table, true )
 				&& ! $this->migration_log->is_seeded( $migration->get_schema() );
 			}
 		);
@@ -154,17 +167,17 @@ class Migration_Manager {
 	}
 
 	/**
-	 * Removes all the tables in collection excepct those passed as exlcuded
+	 * Removes all the tables in collection except those passed as excluded
 	 *
-	 * @param string ...$exlcude_table Table names to exclude.
+	 * @param string ...$excluded_table Table names to exclude.
 	 * @return self
 	 */
-	public function drop_tables( string ...$exlcude_table ): self {
-		// Remove exlcluded tables.
+	public function drop_tables( string ...$excluded_table ): self {
+		// Remove excluded tables.
 		$to_seed = array_filter(
 			$this->migrations,
-			function( Database_Migration $migration ) use ( $exlcude_table ): bool {
-				return ! in_array( $migration->get_table_name(), $exlcude_table, true );
+			function( Database_Migration $migration ) use ( $excluded_table ): bool {
+				return ! in_array( $migration->get_table_name(), $excluded_table, true );
 			}
 		);
 
@@ -177,7 +190,7 @@ class Migration_Manager {
 				throw Migration_Exception::failed_to_drop_table( $migration->get_table_name() );
 			}
 
-			// Remove mitation from log.
+			// Remove migration from log.
 			$this->migration_log->remove_migration( $migration->get_schema() );
 		}
 

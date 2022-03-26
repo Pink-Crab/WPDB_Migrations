@@ -100,28 +100,6 @@ class Test_Migaration_Log_Manager extends WP_UnitTestCase {
 		$this->assertFalse( $custom_logger->is_seeded( new Schema( 'unset_mock' ) ) );
 	}
 
-	/** @testdox It should be possible to check if a schema has changed since it was last logged. */
-	public function test_check_hash(): void {
-		$schema = Schema_Provider::migration_log_schema();
-		add_option(
-			'check_hash_log',
-			\serialize(
-				array( 'test_table' => Log::new_from_schema( $schema ) )
-			)
-		);
-
-		$custom_logger = new Migration_Log_Manager( 'check_hash_log' );
-
-		// Check the hashes match.
-		$this->assertTrue( $custom_logger->check_hash( $schema ) );
-
-		// Alter schema and check hashes done match.
-		$updated_schema = clone $schema;
-		$updated_schema->column( 'fake' )->varchar( 12 );
-
-		$this->assertFalse( $custom_logger->check_hash( $updated_schema ) );
-	}
-
 	/** @testdox When checking if a schema has changed, it should return false if the schema has not been logged. */
 	public function test_check_hash_fails_if_table_not_already_created(): void {
 		$schema = Schema_Provider::migration_log_schema();
@@ -133,7 +111,7 @@ class Test_Migaration_Log_Manager extends WP_UnitTestCase {
 		);
 
 		$log = new Migration_Log_Manager( 'test_check_hash_fails_if_table_not_already_created' );
-		$this->assertFalse( $log->check_hash( new Schema( 'Failed' ) ) );
+		$this->assertTrue( $log->can_migrate( new Schema( 'Failed' ) ) );
 	}
 
 	/** @testdox If attempting to upsert a migratuion with new details, the new schema details should be updated in the migration log only if changed. */
@@ -206,5 +184,16 @@ class Test_Migaration_Log_Manager extends WP_UnitTestCase {
 		// With a set value.
 		$log = new Migration_Log_Manager( 'test_can_get_migration_log_key' );
 		$this->assertEquals( 'test_can_get_migration_log_key', $log->get_log_key() );
+	}
+
+	/** @testdox It should be possible to clear the log from the log manager. */
+	public function test_can_clear_log(): void {
+		$log    = new Migration_Log_Manager( 'test_can_clear_log' );
+		$schema = Schema_Provider::migration_log_schema();
+		$log->upsert_migration( $schema );
+
+		$this->assertTrue( '' !== get_option( 'test_can_clear_log' ) );
+		$log->clear_log();
+		$this->assertNull( \get_option( 'test_can_clear_log', null ) );
 	}
 }
