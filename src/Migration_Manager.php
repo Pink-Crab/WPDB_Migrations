@@ -109,18 +109,18 @@ class Migration_Manager {
 	}
 
 	/**
-	 * Creates all the tables in collection expect those passed as excluded
+	 * Creates all the tables in collection except those passed as excluded
 	 *
-	 * @param string ...$exclude_table Table names to exclude.
+	 * @param string ...$excluded_table Table names to exclude.
 	 * @return self
 	 */
-	public function create_tables( string ...$exclude_table ): self {
+	public function create_tables( string ...$excluded_table ): self {
 
 		// Remove excluded tables.
 		$to_create = array_filter(
 			$this->migrations,
-			function( Database_Migration $migration ) use ( $exclude_table ): bool {
-				return ! in_array( $migration->get_table_name(), $exclude_table, true )
+			function( Database_Migration $migration ) use ( $excluded_table ): bool {
+				return ! in_array( $migration->get_table_name(), $excluded_table, true )
 				&& $this->migration_log->can_migrate( $migration->get_schema() );
 			}
 		);
@@ -138,18 +138,18 @@ class Migration_Manager {
 	}
 
 	/**
-	 * Seeds all the tables in collection expect those passed as excluded
+	 * Seeds all the tables in collection except those passed as excluded
 	 *
-	 * @param string ...$exclude_table Table names to exclude.
+	 * @param string ...$excluded_table Table names to exclude.
 	 * @return self
 	 */
-	public function seed_tables( string ...$exclude_table ): self {
+	public function seed_tables( string ...$excluded_table ): self {
 
 		// Remove excluded tables.
 		$to_seed = array_filter(
 			$this->migrations,
-			function( Database_Migration $migration ) use ( $exclude_table ): bool {
-				return ! in_array( $migration->get_table_name(), $exclude_table, true )
+			function( Database_Migration $migration ) use ( $excluded_table ): bool {
+				return ! in_array( $migration->get_table_name(), $excluded_table, true )
 				&& ! $this->migration_log->is_seeded( $migration->get_schema() );
 			}
 		);
@@ -167,17 +167,17 @@ class Migration_Manager {
 	}
 
 	/**
-	 * Removes all the tables in collection expect those passed as excluded
+	 * Removes all the tables in collection except those passed as excluded
 	 *
-	 * @param string ...$exclude_table Table names to exclude.
+	 * @param string ...$excluded_table Table names to exclude.
 	 * @return self
 	 */
-	public function drop_tables( string ...$exclude_table ): self {
+	public function drop_tables( string ...$excluded_table ): self {
 		// Remove excluded tables.
 		$to_seed = array_filter(
 			$this->migrations,
-			function( Database_Migration $migration ) use ( $exclude_table ): bool {
-				return ! in_array( $migration->get_table_name(), $exclude_table, true );
+			function( Database_Migration $migration ) use ( $excluded_table ): bool {
+				return ! in_array( $migration->get_table_name(), $excluded_table, true );
 			}
 		);
 
