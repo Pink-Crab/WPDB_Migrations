@@ -1,11 +1,11 @@
-# WP_DB_Migration
+# WPDB_Migration
 System for creating database migrations with WordPress
 
-![PinkCrab WP DB Migration Version 1.0.1](https://img.shields.io/badge/Current_Version-1.0.1-green.svg?style=flat " ") 
+![PinkCrab WP DB Migration Version 1.0.2](https://img.shields.io/badge/Current_Version-1.0.1-green.svg?style=flat " ") 
 [![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](https://github.com/ellerbrock/open-source-badge/)
 ![](https://github.com/Pink-Crab/WP_DB_Migration/workflows/PinkCrab_GitHub_CI/badge.svg " ")
 [![codecov](https://codecov.io/gh/Pink-Crab/WP_DB_Migration/branch/master/graph/badge.svg)](https://codecov.io/gh/Pink-Crab/WP_DB_Migration)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Pink-Crab/WP_DB_Migration/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Pink-Crab/WP_DB_Migration/?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Pink-Crab/WPDB_Migrations/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Pink-Crab/WPDB_Migrations/?branch=master)
  
 
 ***********************************************
@@ -16,9 +16,12 @@ Requires PinkCrab Table Builder, Composer and WordPress.
 
 Uses the [WPDB Table Builder](https://github.com/Pink-Crab/WPDB-Table-Builder) library.
 
-Works with PHP versions 7.1, 7.2, 7.3 & 7.4
+> **TESTED AGAINST**
+> * PHP 7.1, 7.2, 7.3, 7.4, 8.0 & 8.1
+> * Mysql 5.7, MariaDB 10.2, 10.3, 10.4, 10.5, 10.6 & 10.7
+> * WP5.5, WP5.6, WP5.7, WP5.8 & WP5.9
 
-> If you are using this with the [PinkCrab Perique framework](https://perique.info), please use the [Perique Migrations](https://github.com/Pink-Crab/Perique_Migrations) module.
+****
 
 
 ## Installation
@@ -26,6 +29,8 @@ Works with PHP versions 7.1, 7.2, 7.3 & 7.4
 ``` bash
 $ composer require pinkcrab/wp-db-migrations
 ```
+
+> If you are using this with the [PinkCrab Perique framework](https://perique.info), please use the [Perique Migrations](https://github.com/Pink-Crab/Perique_Migrations) module.
 
 ## Why
 
