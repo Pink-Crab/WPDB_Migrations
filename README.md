@@ -75,7 +75,7 @@ class Foo_Migration extends Database_Migration {
 ```
 
 
-Once you have your Migrations created it is a case of using the Migration_Manager to handle the creation, seeding and eventaul dropping of the table.
+Once you have your Migrations created it is a case of using the Migration_Manager to handle the creation, seeding and eventual dropping of the table.
 
 **[Read the Builder documentation](https://github.com/Pink-Crab/WPDB-Table-Builder)**
 
@@ -103,6 +103,9 @@ $manager->drop_tables('some_table_to_skip');
 ```
 > It is suggested to wrap create_tables, seed_tables and drop_tables in a try/catch as they can throw exceptions.
 
+[Reade more about the Migration Manager](/docs/migration-manager.md)
+
+
 ## Factory
 
 You can create an instance of both a Migration Manager and Migration Log.
@@ -127,6 +130,7 @@ If you need to access the Log, you can either call it from a Migration_Manager i
 $log = new Migration_Log_Manager('custom_option_key');
 ```
 
+[Reade more about the Migration Log](/docs/log-manager.md)
 
 ## Exceptions
 
