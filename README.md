@@ -161,11 +161,16 @@ The best way to use the Migration service is as part of your plugins activation/
 
 Thanks to the Migration_Log, tables will only be reprocessed if the schema has changed and data can only be seeded once. So if you plan to add seed data in for later versions of your plugin, they can be added when ready.
 
+> When working with Foreign Keys, ensure that all base tables are created first, then those that reference it. But when dropping ensure this is done in reverse.  
+  
+  
+> Tables are all created, then all seeded in the same order
+
 [See our example plugin](https://github.com/gin0115/PinkCrab_WPDB_MIgration_Example)
 
 ---
 ## Change log
-
+* 1.0.2 - Updated docs, added in means to clear all Logs from Log Manager and fixed a type with `Migration_Manager::migation_log()` (this method has been deprecated and replace with `Migration_Manager::migration_log()`)
 * 1.0.1 - Allows access to the migration manager log key via `Migration_Log_Manager->get_log_key()` method
 * 1.0.0 - Now supports[WPDB Table Builder](https://github.com/Pink-Crab/WPDB-Table-Builder/tree/1.0.0) 1.0.0
 * 0.3.1 - Added Dependabot config
