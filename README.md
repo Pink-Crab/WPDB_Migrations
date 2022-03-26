@@ -161,37 +161,7 @@ The best way to use the Migration service is as part of your plugins activation/
 
 Thanks to the Migration_Log, tables will only be reprocessed if the schema has changed and data can only be seeded once. So if you plan to add seed data in for later versions of your plugin, they can be added when ready.
 
-You can also hook the Migration_Manager into any custom plugin update systems. So long as you use the same Migration Log key (acme_plugin_migrations in example below), the log will be persisted in the options table.
-
-```php
-// file plugin.php
-
-global $wpdb;
-$engine  = new DB_Delta_Engine($wpdb); // https://github.com/Pink-Crab/WPDB-Table-Builder
-$builder = new Builder($engine); // https://github.com/Pink-Crab/WPDB-Table-Builder
-
-$migrations = new Migration_Manager( $builder, $wpdb, "acme_plugin_migrations");
-
-// Add your migrations
-$migrations->add_migration(new Some_Migration());
-$migrations->add_migration(new Some_Other_Migration());
-
-// Build and seed all tables using register_activation_hook
-register_activation_hook( __FILE__, function() use ($migrations){
-	// Create tables
-	$migrations->create_tables();
-
-	// Create seeds
-	$migrations->seed_tables();
-
-	// Register unistall action.
-	register_uninstall_hook( __FILE__, function() use ($migrations){
-		$migrations->drop_tables();
-	});
-	
-});
-```
-Obviously this can be structured however you wish.
+[See our example plugin](https://github.com/gin0115/PinkCrab_WPDB_MIgration_Example)
 
 ---
 ## Change log
