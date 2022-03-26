@@ -4,7 +4,7 @@ System for creating database migrations with WordPress
 ![PinkCrab WP DB Migration Version 1.0.2](https://img.shields.io/badge/Current_Version-1.0.2-green.svg?style=flat " ") 
 [![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](https://github.com/ellerbrock/open-source-badge/)
 ![](https://github.com/Pink-Crab/WP_DB_Migration/workflows/PinkCrab_GitHub_CI/badge.svg " ")
-[![codecov](https://codecov.io/gh/Pink-Crab/WP_DB_Migration/branch/master/graph/badge.svg)](https://codecov.io/gh/Pink-Crab/WP_DB_Migration)
+[![codecov](https://codecov.io/gh/Pink-Crab/WPDB_Migrations/branch/master/graph/badge.svg?token=WEZOLOURI1)](https://codecov.io/gh/Pink-Crab/WPDB_Migrations)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Pink-Crab/WPDB_Migrations/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Pink-Crab/WPDB_Migrations/?branch=master)
  
 
