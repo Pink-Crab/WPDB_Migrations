@@ -82,7 +82,7 @@ class Migration_Seeder {
 
 		// Check any errors inserting.
 		if ( $this->wpdb->last_error !== '' ) {
-			throw Migration_Exception::failed_to_insert_seed( $this->wpdb->last_error, $schema->get_table_name() );
+			throw Migration_Exception::failed_to_insert_seed( $schema, $this->wpdb->last_error );
 		}
 
 		return $this->wpdb->insert_id;
@@ -101,7 +101,7 @@ class Migration_Seeder {
 
 		// If colum doesnt exist, thorw exception.
 		if ( ! array_key_exists( $column, $schema_columns ) ) {
-			throw Migration_Exception::seed_column_doesnt_exist( $column, $schema->get_table_name() );
+			throw Migration_Exception::seed_column_doesnt_exist( $schema, $column );
 		}
 
 		return $this->column_type_format( $schema_columns[ $column ]->get_type() ?? '' );

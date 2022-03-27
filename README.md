@@ -141,19 +141,21 @@ $log = new Migration_Log_Manager('custom_option_key');
 
 During the process, multiple exceptions can be thrown, these are all ```PinkCrab\DB_Migration\Migration_Exceptions``` 
 
-### seed_column_doesnt_exist()
+> All of our exceptions contain the instance of Schema being worked on, this can be accessed via `$exception->get_schema()`. Also WPDB error is set if WPDB error triggered, this can be accessed using `$exception->get_wpdb_error()` (seed_column_doesnt_exist, doesn't use this)
+
+### seed_column_doesnt_exist
 Thrown when trying get the column data from a schema, where the column doesn't exist.
 > Message: *Could not find column {column name} in {table name} schema definition*
 > 
 > Error Code: 1
 
-### failed_to_insert_seed()
+### failed_to_insert_seed
 Thrown when attempting to insert seed data, but wpdb returns an error.
 > Message: *Could not insert seed into {table name}, failed with error {wpdb error}*
 > 
 > Error Code: 2
 
-### failed_to_drop_table()
+### failed_to_drop_table
 Thrown when wpdb produces an error removing a table.
 > Message: *Failed to drop {table name}*
 > 
