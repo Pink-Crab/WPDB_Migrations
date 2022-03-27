@@ -141,7 +141,7 @@ $log = new Migration_Log_Manager('custom_option_key');
 
 During the process, multiple exceptions can be thrown, these are all ```PinkCrab\DB_Migration\Migration_Exceptions``` 
 
-> All of our exceptions contain the instance of Schema being worked on, this can be accessed via `$exception->get_schema()`.
+> All of our exceptions contain the instance of Schema being worked on, this can be accessed via `$exception->get_schema()`. Also WPDB error is set if WPDB error triggered, this can be accessed using `$exception->get_wpdb_error()` (seed_column_doesnt_exist, doesn't use this)
 
 ### seed_column_doesnt_exist
 Thrown when trying get the column data from a schema, where the column doesn't exist.
