@@ -1,7 +1,7 @@
 # WPDB_Migration
 System for creating database migrations with WordPress
 
-![PinkCrab WP DB Migration Version 1.0.2](https://img.shields.io/badge/Current_Version-1.0.2-green.svg?style=flat " ") 
+![PinkCrab WP DB Migration Version 1.0.3](https://img.shields.io/badge/Current_Version-1.0.3-green.svg?style=flat " ") 
 [![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](https://github.com/ellerbrock/open-source-badge/)
 ![](https://github.com/Pink-Crab/WP_DB_Migration/workflows/PinkCrab_GitHub_CI/badge.svg " ")
 [![codecov](https://codecov.io/gh/Pink-Crab/WPDB_Migrations/branch/master/graph/badge.svg?token=WEZOLOURI1)](https://codecov.io/gh/Pink-Crab/WPDB_Migrations)
@@ -177,6 +177,7 @@ Thanks to the Migration_Log, tables will only be reprocessed if the schema has c
 
 ---
 ## Change log
+* 1.0.3 - Improved exceptions 
 * 1.0.2 - Updated docs, added in means to clear all Logs from Log Manager and fixed a type with `Migration_Manager::migation_log()` (this method has been deprecated and replace with `Migration_Manager::migration_log()`)
 * 1.0.1 - Allows access to the migration manager log key via `Migration_Log_Manager->get_log_key()` method
 * 1.0.0 - Now supports[WPDB Table Builder](https://github.com/Pink-Crab/WPDB-Table-Builder/tree/1.0.0) 1.0.0
