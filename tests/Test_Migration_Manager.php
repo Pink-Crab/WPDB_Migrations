@@ -14,9 +14,12 @@ use Exception;
 use WP_UnitTestCase;
 use Gin0115\WPUnit_Helpers\Objects;
 use PinkCrab\Table_Builder\Builder;
+use PinkCrab\DB_Migration\Log\Migration_Log;
 use PinkCrab\DB_Migration\Migration_Manager;
 use PinkCrab\DB_Migration\Database_Migration;
 use PinkCrab\DB_Migration\Migration_Exception;
+use PinkCrab\DB_Migration\Log\Migration_Log_Manager;
+use PinkCrab\Table_Builder\Exception\Engine_Exception;
 use PinkCrab\DB_Migration\Tests\Stubs\Stub_Migration_Bar;
 use PinkCrab\DB_Migration\Tests\Stubs\Stub_Migration_Foo;
 
@@ -161,8 +164,44 @@ class Test_Migration_Manager extends WP_UnitTestCase {
 		$manager->add_migration( $foo_migration );
 		$manager->create_tables();
 
-		$this->expectExceptionCode( 3 );
 		$this->getExpectedException( Migration_Exception::class );
+		$this->expectExceptionCode( 3 );
 		$manager->drop_tables();
 	}
+
+	/** @testdox If an Engine Exception is thrown while dropping a table, this should be caught and throw as a Migration Exception, with access to the schema and wpdb error. */
+	public function test_rethrows_exception_if_caught_dropping_tabe(): void {
+		$foo_migration = new Stub_Migration_Foo();
+
+		$mock_builder = $this->createMock( Builder::class );
+		$mock_builder->method( 'drop_table' )
+			->willThrowException( new Engine_Exception( $foo_migration->get_schema(), 'Throw to catch' ) );
+
+		$mock_wpdb             = $this->createMock( wpdb::class );
+		$mock_wpdb->last_error = 'MOCK ERROR';
+		$mock_wpdb->method( 'get_results' )->willReturn( 1 );
+
+		$manager = new Migration_Manager( $mock_builder, $mock_wpdb, 'log_key' );
+		$manager->add_migration( $foo_migration );
+		$manager->create_tables();
+
+		try {
+			$manager->drop_tables();
+		} catch ( Migration_Exception $th ) {
+			$this->assertInstanceOf( Migration_Exception::class, $th );
+			$this->assertEquals( 3, $th->getCode() );
+			$this->assertSame( $foo_migration->get_schema(), $th->get_schema() );
+			$this->assertSame( 'Throw to catch', $th->get_wpdb_error() );
+			$this->assertEquals( "Failed to drop {$foo_migration->get_table_name()}", $th->getMessage() );
+		}
+	}
+
+	/** @testdox It should be possible to access the Migration Log from the Migration Manager */
+	public function test_can_access_log(): void {
+		$manager = $this->mock_manager_provider( 'drop_tables' );
+		$log     = $manager->migration_log();
+		$this->assertInstanceOf( Migration_Log_Manager::class, $log );
+		$this->assertEquals( 'drop_tables', $log->get_log_key() );
+	}
+
 }

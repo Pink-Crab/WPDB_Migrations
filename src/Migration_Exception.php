@@ -25,20 +25,58 @@ declare(strict_types=1);
 namespace PinkCrab\DB_Migration;
 
 use Exception;
+use Throwable;
+use PinkCrab\Table_Builder\Schema;
 
 class Migration_Exception extends Exception {
 
 	/**
+	 * Schema definition
+	 *
+	 * @var Schema
+	 */
+	protected $schema;
+
+	/**
+	 * WPDB Error
+	 *
+	 * @var string
+	 */
+	protected $wpdb_error;
+
+	/**
+	 * Create instance of Migration_Exception
+	 *
+	 * @param \PinkCrab\Table_Builder\Schema $schema
+	 * @param string $wpdb_error
+	 * @param string $message
+	 * @param int $code
+	 * @param Throwable$previous
+	 */
+	public function __construct( Schema $schema, string $wpdb_error = '', $message = '', $code = 0, Throwable $previous = null ) {
+		parent::__construct( $message, $code, $previous );
+		$this->schema     = $schema;
+		$this->wpdb_error = $wpdb_error;
+	}
+
+
+	/**
 	 * Exception for column in seed data not existing in schema.
 	 *
+	 * @param Schema $schema
 	 * @param string $column
-	 * @param string $table_name
 	 * @return Migration_Exception
 	 * @code 1
 	 */
-	public static function seed_column_doesnt_exist( string $column, string $table_name ): Migration_Exception {
+	public static function seed_column_doesnt_exist( Schema $schema, string $column ): Migration_Exception {
 		return new Migration_Exception(
-			\sprintf( 'Could not find column %s in %s schema definition', $column, $table_name ),
+			$schema,
+			'',
+			\sprintf(
+				'Could not find column %s in %s schema definition',
+				$column,
+				$schema->get_table_name()
+			),
 			1
 		);
 	}
@@ -46,14 +84,16 @@ class Migration_Exception extends Exception {
 	/**
 	 * Exception for failure to insert seed data.
 	 *
+	 * @param Schema $schema
 	 * @param string $wpdb_error
-	 * @param string $table_name
 	 * @return Migration_Exception
 	 * @code 2
 	 */
-	public static function failed_to_insert_seed( string $wpdb_error, string $table_name ): Migration_Exception {
+	public static function failed_to_insert_seed( Schema $schema, string $wpdb_error ): Migration_Exception {
 		return new Migration_Exception(
-			\sprintf( 'Could not insert seed into %s, failed with error: %s', $table_name, $wpdb_error ),
+			$schema,
+			$wpdb_error,
+			\sprintf( 'Could not insert seed into %s, failed with error: %s', $schema->get_table_name(), $wpdb_error ),
 			2
 		);
 	}
@@ -61,14 +101,35 @@ class Migration_Exception extends Exception {
 	/**
 	 * Exception for failure to drop a table
 	 *
-	 * @param string $table_name
+	 * @param Schema $schema
+	 * @param string $wpdb_error
 	 * @return Migration_Exception
 	 * @code 3
 	 */
-	public static function failed_to_drop_table( string $table_name ): Migration_Exception {
+	public static function failed_to_drop_table( Schema $schema, string $wpdb_error ): Migration_Exception {
 		return new Migration_Exception(
-			\sprintf( 'Failed to drop %d', $table_name ),
+			$schema,
+			$wpdb_error,
+			\sprintf( 'Failed to drop %s', $schema->get_table_name() ),
 			3
 		);
+	}
+
+	/**
+	 * Get schema definition
+	 *
+	 * @return Schema
+	 */
+	public function get_schema(): Schema {
+		return $this->schema;
+	}
+
+	/**
+	 * Get WPDB Error
+	 *
+	 * @return string
+	 */
+	public function get_wpdb_error(): string {
+		return $this->wpdb_error;
 	}
 }
