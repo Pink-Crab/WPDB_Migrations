@@ -28,6 +28,7 @@ use wpdb;
 use PinkCrab\Table_Builder\Builder;
 use PinkCrab\DB_Migration\Database_Migration;
 use PinkCrab\DB_Migration\Log\Migration_Log_Manager;
+use PinkCrab\Table_Builder\Exception\Engine_Exception;
 
 class Migration_Manager {
 
@@ -71,6 +72,7 @@ class Migration_Manager {
 	 *
 	 * @return \PinkCrab\DB_Migration\Log\Migration_Log_Manager
 	 * @deprecated 1.0.2 Due to a typo
+	 * @codeCoverageIgnore
 	 */
 	public function migation_log(): Migration_Log_Manager {
 		return $this->migration_log;
@@ -183,11 +185,15 @@ class Migration_Manager {
 
 		foreach ( $to_seed as $migration ) {
 
-			$result = $this->builder->drop_table( $migration->get_schema() );
+			try {
+				$result = $this->builder->drop_table( $migration->get_schema() );
+			} catch ( Engine_Exception $th ) {
+				throw Migration_Exception::failed_to_drop_table( $migration->get_schema(), $th->getMessage() );
+			}
 
 			// Throw exception if fails.
 			if ( $result === false ) {
-				throw Migration_Exception::failed_to_drop_table( $migration->get_table_name() );
+				throw Migration_Exception::failed_to_drop_table( $migration->get_schema(), '' );
 			}
 
 			// Remove migration from log.
