@@ -1,9 +1,15 @@
-# WPDB_Migration
+# WPDB_Migrations
+
 System for creating database migrations with WordPress
 
-![PinkCrab WP DB Migration Version 1.0.3](https://img.shields.io/badge/Current_Version-1.0.3-green.svg?style=flat " ") 
-[![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](https://github.com/ellerbrock/open-source-badge/)
-![](https://github.com/Pink-Crab/WP_DB_Migration/workflows/PinkCrab_GitHub_CI/badge.svg " ")
+[![Latest Stable Version](http://poser.pugx.org/pinkcrab/wp-db-migrations/v)](https://packagist.org/packages/pinkcrab/wp-db-migrations) [![Total Downloads](http://poser.pugx.org/pinkcrab/wp-db-migrations/downloads)](https://packagist.org/packages/pinkcrab/wp-db-migrations) [![Latest Unstable Version](http://poser.pugx.org/pinkcrab/wp-db-migrations/v/unstable)](https://packagist.org/packages/pinkcrab/wp-db-migrations) [![License](http://poser.pugx.org/pinkcrab/wp-db-migrations/license)](https://packagist.org/packages/pinkcrab/wp-db-migrations) [![PHP Version Require](http://poser.pugx.org/pinkcrab/wp-db-migrations/require/php)](https://packagist.org/packages/pinkcrab/wp-db-migrations)
+![GitHub contributors](https://img.shields.io/github/contributors/Pink-Crab/WPDB_Migrations?label=Contributors)
+![GitHub issues](https://img.shields.io/github/issues-raw/Pink-Crab/WPDB_Migrations)
+
+[![WordPress 5.9 Test Suite [PHP7.2-8.1]](https://github.com/Pink-Crab/WPDB-Table-Builder/actions/workflows/WP_5_9.yaml/badge.svg)](https://github.com/Pink-Crab/WPDB-Table-Builder/actions/workflows/WP_5_9.yaml)
+[![WordPress 6.0 Test Suite [PHP7.2-8.1]](https://github.com/Pink-Crab/WPDB-Table-Builder/actions/workflows/WP_6_0.yaml/badge.svg)](https://github.com/Pink-Crab/WPDB-Table-Builder/actions/workflows/WP_6_0.yaml)
+[![WordPress 6.1 Test Suite [PHP7.2-8.1]](https://github.com/Pink-Crab/WPDB-Table-Builder/actions/workflows/WP_6_1.yaml/badge.svg)](https://github.com/Pink-Crab/WPDB-Table-Builder/actions/workflows/WP_6_1.yaml)
+
 [![codecov](https://codecov.io/gh/Pink-Crab/WPDB_Migrations/branch/master/graph/badge.svg?token=WEZOLOURI1)](https://codecov.io/gh/Pink-Crab/WPDB_Migrations)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Pink-Crab/WPDB_Migrations/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Pink-Crab/WPDB_Migrations/?branch=master)
  
@@ -17,9 +23,9 @@ Requires PinkCrab Table Builder, Composer and WordPress.
 Uses the [WPDB Table Builder](https://github.com/Pink-Crab/WPDB-Table-Builder) library.
 
 > **TESTED AGAINST**
-> * PHP 7.1, 7.2, 7.3, 7.4, 8.0 & 8.1
+> * PHP  7.2, 7.3, 7.4, 8.0 & 8.1
 > * Mysql 5.7, MariaDB 10.2, 10.3, 10.4, 10.5, 10.6 & 10.7
-> * WP5.5, WP5.6, WP5.7, WP5.8 & WP5.9
+> * WP5.9, WP6.0 & WP6.1
 
 ****
 
@@ -177,6 +183,7 @@ Thanks to the Migration_Log, tables will only be reprocessed if the schema has c
 
 ---
 ## Change log
+* 1.0.4 - Updated dependencies and testing pipeline
 * 1.0.3 - Improved exceptions 
 * 1.0.2 - Updated docs, added in means to clear all Logs from Log Manager and fixed a type with `Migration_Manager::migation_log()` (this method has been deprecated and replace with `Migration_Manager::migration_log()`)
 * 1.0.1 - Allows access to the migration manager log key via `Migration_Log_Manager->get_log_key()` method

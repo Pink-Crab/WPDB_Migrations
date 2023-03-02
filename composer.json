@@ -26,19 +26,19 @@
         "phpunit/phpunit": "^7.0 || ^8.0",
         "phpstan/phpstan": "^1.0",
         "szepeviktor/phpstan-wordpress": "^1.0",
-        "php-stubs/wordpress-stubs": "^5.9.0",
-        "roots/wordpress": "^5.9",
-        "wp-phpunit/wp-phpunit": "^5.9",
+        "php-stubs/wordpress-stubs": "^6.0 || ^5.9",
+        "roots/wordpress": "^6.1",
+        "wp-phpunit/wp-phpunit": "^6.1",
         "dealerdirect/phpcodesniffer-composer-installer": "*",
         "wp-coding-standards/wpcs": "*",
-        "object-calisthenics/phpcs-calisthenics-rules": "*",
         "yoast/phpunit-polyfills": "^0.2.0 || ^1.0.0",
-        "symfony/var-dumper": "4.*",
-        "gin0115/wpunit-helpers": "~1.0.0"
+        "symfony/var-dumper": "*",
+        "gin0115/wpunit-helpers": "~1",
+        "vlucas/phpdotenv": "^5.4"
     },
     "require": {
-        "php": ">=7.1.0",
-        "pinkcrab/table_builder": "1.*"
+        "php": ">=7.2.0",
+        "pinkcrab/table_builder": "1.2.*"
     },
     "scripts": {
         "test": "phpunit --coverage-clover clover.xml --testdox  --colors=always",
