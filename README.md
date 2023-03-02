@@ -6,9 +6,9 @@ System for creating database migrations with WordPress
 ![GitHub contributors](https://img.shields.io/github/contributors/Pink-Crab/WPDB_Migrations?label=Contributors)
 ![GitHub issues](https://img.shields.io/github/issues-raw/Pink-Crab/WPDB_Migrations)
 
-[![WordPress 5.9 Test Suite [PHP7.2-8.1]](https://github.com/Pink-Crab/WPDB-Table-Builder/actions/workflows/WP_5_9.yaml/badge.svg)](https://github.com/Pink-Crab/WPDB-Table-Builder/actions/workflows/WP_5_9.yaml)
-[![WordPress 6.0 Test Suite [PHP7.2-8.1]](https://github.com/Pink-Crab/WPDB-Table-Builder/actions/workflows/WP_6_0.yaml/badge.svg)](https://github.com/Pink-Crab/WPDB-Table-Builder/actions/workflows/WP_6_0.yaml)
-[![WordPress 6.1 Test Suite [PHP7.2-8.1]](https://github.com/Pink-Crab/WPDB-Table-Builder/actions/workflows/WP_6_1.yaml/badge.svg)](https://github.com/Pink-Crab/WPDB-Table-Builder/actions/workflows/WP_6_1.yaml)
+[![WordPress 5.9 Test Suite [PHP7.2-8.1]](https://github.com/Pink-Crab/WPDB_Migrations/actions/workflows/WP_5_9.yaml/badge.svg)](https://github.com/Pink-Crab/WPDB_Migrations/actions/workflows/WP_5_9.yaml)
+[![WordPress 6.0 Test Suite [PHP7.2-8.1]](https://github.com/Pink-Crab/WPDB_Migrations/actions/workflows/WP_6_0.yaml/badge.svg)](https://github.com/Pink-Crab/WPDB_Migrations/actions/workflows/WP_6_0.yaml)
+[![WordPress 6.1 Test Suite [PHP7.2-8.1]](https://github.com/Pink-Crab/WPDB_Migrations/actions/workflows/WP_6_1.yaml/badge.svg)](https://github.com/Pink-Crab/WPDB_Migrations/actions/workflows/WP_6_1.yaml)
 
 [![codecov](https://codecov.io/gh/Pink-Crab/WPDB_Migrations/branch/master/graph/badge.svg?token=WEZOLOURI1)](https://codecov.io/gh/Pink-Crab/WPDB_Migrations)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Pink-Crab/WPDB_Migrations/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Pink-Crab/WPDB_Migrations/?branch=master)
