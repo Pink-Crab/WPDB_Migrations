@@ -5,13 +5,12 @@ System for creating database migrations with WordPress
 [![Latest Stable Version](http://poser.pugx.org/pinkcrab/wp-db-migrations/v)](https://packagist.org/packages/pinkcrab/wp-db-migrations) [![Total Downloads](http://poser.pugx.org/pinkcrab/wp-db-migrations/downloads)](https://packagist.org/packages/pinkcrab/wp-db-migrations) [![Latest Unstable Version](http://poser.pugx.org/pinkcrab/wp-db-migrations/v/unstable)](https://packagist.org/packages/pinkcrab/wp-db-migrations) [![License](http://poser.pugx.org/pinkcrab/wp-db-migrations/license)](https://packagist.org/packages/pinkcrab/wp-db-migrations) [![PHP Version Require](http://poser.pugx.org/pinkcrab/wp-db-migrations/require/php)](https://packagist.org/packages/pinkcrab/wp-db-migrations)
 ![GitHub contributors](https://img.shields.io/github/contributors/Pink-Crab/WPDB_Migrations?label=Contributors)
 ![GitHub issues](https://img.shields.io/github/issues-raw/Pink-Crab/WPDB_Migrations)
-
 [![WordPress 5.9 Test Suite [PHP7.2-8.1]](https://github.com/Pink-Crab/WPDB_Migrations/actions/workflows/WP_5_9.yaml/badge.svg)](https://github.com/Pink-Crab/WPDB_Migrations/actions/workflows/WP_5_9.yaml)
 [![WordPress 6.0 Test Suite [PHP7.2-8.1]](https://github.com/Pink-Crab/WPDB_Migrations/actions/workflows/WP_6_0.yaml/badge.svg)](https://github.com/Pink-Crab/WPDB_Migrations/actions/workflows/WP_6_0.yaml)
 [![WordPress 6.1 Test Suite [PHP7.2-8.1]](https://github.com/Pink-Crab/WPDB_Migrations/actions/workflows/WP_6_1.yaml/badge.svg)](https://github.com/Pink-Crab/WPDB_Migrations/actions/workflows/WP_6_1.yaml)
-
 [![codecov](https://codecov.io/gh/Pink-Crab/WPDB_Migrations/branch/master/graph/badge.svg?token=WEZOLOURI1)](https://codecov.io/gh/Pink-Crab/WPDB_Migrations)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Pink-Crab/WPDB_Migrations/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Pink-Crab/WPDB_Migrations/?branch=master)
+[![Maintainability](https://api.codeclimate.com/v1/badges/a680395630683fd2f1e4/maintainability)](https://codeclimate.com/github/Pink-Crab/WPDB_Migrations/maintainability)
  
 
 ***********************************************
