@@ -101,5 +101,4 @@ abstract class Database_Migration {
 	public function get_table_name(): string {
 		return $this->table_name;
 	}
-
 }

@@ -143,7 +143,8 @@ class Migration_Log {
 			'foreign_keys' => $schema->get_foreign_keys(),
 		);
 
-		return md5( \serialize( $export ) ?: $schema->get_table_name() );  // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize, Serialised to preserve types
+		$serialized = \serialize( $export );  // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize -- Serialised to preserve types.
+		return md5( $serialized ? $serialized : $schema->get_table_name() );
 	}
 
 	/** GETTERS */

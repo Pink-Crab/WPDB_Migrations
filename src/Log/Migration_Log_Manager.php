@@ -45,7 +45,7 @@ class Migration_Log_Manager {
 	 */
 	protected $migration_details = array();
 
-	public function __construct( string $option_key = null ) {
+	public function __construct( ?string $option_key = null ) {
 		$this->option_key = $option_key ?? 'pinkcrab_migration_log';
 		$this->set_migration_details();
 	}

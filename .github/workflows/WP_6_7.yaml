@@ -1,0 +1,64 @@
+name: WordPress 6.7 Test Suite [PHP8.0-8.4]
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master, develop ]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        operating-system: [ubuntu-latest]
+        php-versions: ['8.0', '8.1', '8.2', '8.3', '8.4']
+        mysql-versions: ['mysql:9', 'mysql:8.4', 'mysql:8.0', 'mariadb:12', 'mariadb:11.8', 'mariadb:11.4', 'mariadb:11.2', 'mariadb:11.0', 'mariadb:10.11', 'mariadb:10.6']
+    runs-on: ${{ matrix.operating-system }}
+    services:
+      mysql-service:
+        image: ${{ matrix.mysql-versions }}
+        env:
+          MYSQL_ROOT_PASSWORD: 'crab'
+          MYSQL_DATABASE: pc_core_tests
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="healthcheck.sh --connect || mysqladmin ping -uroot -pcrab"
+          --health-interval=10s
+          --health-timeout=10s
+          --health-retries=10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: mbstring, intl, pcov
+          ini-values: post_max_size=256M, log_errors=1
+          tools: pecl
+
+      - name: Check PHP Version
+        run: php -v
+
+      - name: Clear existing composer
+        run: >
+          sudo rm -rf vendor
+          && rm -rf composer.lock
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+
+      - name: Install dependencies
+        run: >
+          rm -rf composer.lock
+          && composer clearcache
+          && composer require php-stubs/wordpress-stubs:6.7.* --dev --no-update
+          && composer require roots/wordpress:6.7.* --dev --no-update
+          && composer require wp-phpunit/wp-phpunit:6.7.* --dev --no-update
+          && composer update --no-cache
+
+      - name: Run Tests on WP6.7
+        env:
+          environment_github: true
+        run: composer all

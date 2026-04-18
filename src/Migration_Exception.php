@@ -53,7 +53,7 @@ class Migration_Exception extends Exception {
 	 * @param int $code
 	 * @param Throwable$previous
 	 */
-	public function __construct( Schema $schema, string $wpdb_error = '', $message = '', $code = 0, Throwable $previous = null ) {
+	public function __construct( Schema $schema, string $wpdb_error = '', $message = '', $code = 0, ?Throwable $previous = null ) {
 		parent::__construct( $message, $code, $previous );
 		$this->schema     = $schema;
 		$this->wpdb_error = $wpdb_error;

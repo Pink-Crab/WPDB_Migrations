@@ -64,7 +64,6 @@ class Migration_Manager {
 		$this->builder       = $builder;
 		$this->wpdb          = $wpdb;
 		$this->migration_log = new Migration_Log_Manager( $migration_log_key );
-
 	}
 
 	/**
@@ -121,7 +120,7 @@ class Migration_Manager {
 		// Remove excluded tables.
 		$to_create = array_filter(
 			$this->migrations,
-			function( Database_Migration $migration ) use ( $excluded_table ): bool {
+			function ( Database_Migration $migration ) use ( $excluded_table ): bool {
 				return ! in_array( $migration->get_table_name(), $excluded_table, true )
 				&& $this->migration_log->can_migrate( $migration->get_schema() );
 			}
@@ -136,7 +135,6 @@ class Migration_Manager {
 		}
 
 		return $this;
-
 	}
 
 	/**
@@ -150,7 +148,7 @@ class Migration_Manager {
 		// Remove excluded tables.
 		$to_seed = array_filter(
 			$this->migrations,
-			function( Database_Migration $migration ) use ( $excluded_table ): bool {
+			function ( Database_Migration $migration ) use ( $excluded_table ): bool {
 				return ! in_array( $migration->get_table_name(), $excluded_table, true )
 				&& ! $this->migration_log->is_seeded( $migration->get_schema() );
 			}
@@ -178,7 +176,7 @@ class Migration_Manager {
 		// Remove excluded tables.
 		$to_seed = array_filter(
 			$this->migrations,
-			function( Database_Migration $migration ) use ( $excluded_table ): bool {
+			function ( Database_Migration $migration ) use ( $excluded_table ): bool {
 				return ! in_array( $migration->get_table_name(), $excluded_table, true );
 			}
 		);
@@ -188,11 +186,13 @@ class Migration_Manager {
 			try {
 				$result = $this->builder->drop_table( $migration->get_schema() );
 			} catch ( Engine_Exception $th ) {
+				// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- internal exception message.
 				throw Migration_Exception::failed_to_drop_table( $migration->get_schema(), $th->getMessage() );
 			}
 
 			// Throw exception if fails.
 			if ( $result === false ) {
+				// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- internal exception message.
 				throw Migration_Exception::failed_to_drop_table( $migration->get_schema(), '' );
 			}
 
