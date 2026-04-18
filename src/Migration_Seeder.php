@@ -68,7 +68,7 @@ class Migration_Seeder {
 	protected function insert_seed( Schema $schema, array $seed ): int {
 		// Get format for each column based on the type.
 		$format = array_map(
-			function( string $column_name ) use ( $schema ): string {
+			function ( string $column_name ) use ( $schema ): string {
 				return $this->column_type( $schema, $column_name );
 			},
 			array_keys( $seed )
@@ -82,6 +82,7 @@ class Migration_Seeder {
 
 		// Check any errors inserting.
 		if ( $this->wpdb->last_error !== '' ) {
+			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- internal exception message.
 			throw Migration_Exception::failed_to_insert_seed( $schema, $this->wpdb->last_error );
 		}
 
@@ -101,6 +102,7 @@ class Migration_Seeder {
 
 		// If colum doesnt exist, thorw exception.
 		if ( ! array_key_exists( $column, $schema_columns ) ) {
+			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- internal exception message.
 			throw Migration_Exception::seed_column_doesnt_exist( $schema, $column );
 		}
 

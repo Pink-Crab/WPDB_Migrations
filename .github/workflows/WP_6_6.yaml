@@ -1,4 +1,4 @@
-name: WordPress 5.9 Test Suite [PHP7.2-8.1]
+name: WordPress 6.6 Test Suite [PHP8.0-8.4]
 
 on:
   push:
@@ -11,11 +11,10 @@ jobs:
     strategy:
       matrix:
         operating-system: [ubuntu-latest]
-        php-versions: [ '7.2', '7.3', '7.4', '8.0', '8.1']
-        mysql-versions: ['mysql:5.7', 'mariadb:10.7','mariadb:10.6','mariadb:10.5','mariadb:10.4','mariadb:10.3','mariadb:10.2']
+        php-versions: ['8.0', '8.1', '8.2', '8.3', '8.4']
+        mysql-versions: ['mysql:9', 'mysql:8.4', 'mysql:8.0', 'mariadb:12', 'mariadb:11.8', 'mariadb:11.4', 'mariadb:11.2', 'mariadb:11.0', 'mariadb:10.11', 'mariadb:10.6']
     runs-on: ${{ matrix.operating-system }}
     services:
-      # Setup MYSQL
       mysql-service:
         image: ${{ matrix.mysql-versions }}
         env:
@@ -24,11 +23,11 @@ jobs:
         ports:
           - 3306:3306
         options: >-
-          --health-cmd="mysqladmin ping"
+          --health-cmd="healthcheck.sh --connect || mysqladmin ping -uroot -pcrab"
           --health-interval=10s
-          --health-timeout=5s
-          --health-retries=3
-  
+          --health-timeout=10s
+          --health-retries=10
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -45,21 +44,21 @@ jobs:
 
       - name: Clear existing composer
         run: >
-          sudo rm -rf vendor 
-          && rm -rf composer.lock 
+          sudo rm -rf vendor
+          && rm -rf composer.lock
       - name: Validate composer.json and composer.lock
         run: composer validate
 
       - name: Install dependencies
         run: >
-          rm -rf composer.lock 
+          rm -rf composer.lock
           && composer clearcache
-          && composer require php-stubs/wordpress-stubs:5.9.0 --dev --no-update
-          && composer require roots/wordpress:5.9.4 --dev --no-update
-          && composer require wp-phpunit/wp-phpunit:5.9.4 --dev --no-update
+          && composer require php-stubs/wordpress-stubs:6.6.* --dev --no-update
+          && composer require roots/wordpress:6.6.* --dev --no-update
+          && composer require wp-phpunit/wp-phpunit:6.6.* --dev --no-update
           && composer update --no-cache
-      
-      - name: Run Tests on WP5.9
+
+      - name: Run Tests on WP6.6
         env:
           environment_github: true
         run: composer all
