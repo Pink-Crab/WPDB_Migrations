@@ -23,7 +23,7 @@
         }
     },
     "require-dev": {
-        "phpunit/phpunit": "^8.0 || ^9.0",
+        "phpunit/phpunit": "^9.6",
         "phpstan/phpstan": "^2.0",
         "szepeviktor/phpstan-wordpress": "^2.0",
         "php-stubs/wordpress-stubs": "6.9.*",
@@ -42,7 +42,7 @@
     },
     "scripts": {
         "test": "vendor/bin/phpunit --colors=always --testdox --coverage-clover clover.xml",
-        "coverage": "vendor/bin/phpunit --colors=always --testdox --coverage-html coverage-report",
+        "coverage": "vendor/bin/phpunit --colors=always --testdox --coverage-html coverage-report --coverage-clover clover.xml",
         "analyse": "vendor/bin/phpstan analyse src -l8",
         "sniff": "./vendor/bin/phpcs src/ -v",
         "all": "composer coverage && composer analyse && composer sniff"
