@@ -183,7 +183,7 @@ Thanks to the Migration_Log, tables will only be reprocessed if the schema has c
 
 ---
 ## Change log
-* 1.0.5 - Updated dev deps, PHP 8.0+, phpstan 2.x, refreshed WP 6.6-6.9 test matrix.
+* 1.1.0 - Updated dev deps, PHP 8.0+, phpstan 2.x, refreshed WP 6.6-6.9 test matrix.
 * 1.0.4 - Updated dependencies and testing pipeline
 * 1.0.3 - Improved exceptions 
 * 1.0.2 - Updated docs, added in means to clear all Logs from Log Manager and fixed a type with `Migration_Manager::migation_log()` (this method has been deprecated and replace with `Migration_Manager::migration_log()`)
