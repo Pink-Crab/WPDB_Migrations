@@ -11,8 +11,13 @@ Creates an instance of the migration manager
 
 ```php
 $migrations = new PinkCrab\DB_Migration\Migration_Manager($builder, $wpdb, 'acme_migrations');
-// Its also possible to use the Factory
-$migrations = PinkCrab\DB_Migration\Factory::migration_log('acme_migrations', $wpdb);
+
+// Or use the Factory to build the manager with the DB Delta builder pre-wired:
+$migrations = PinkCrab\DB_Migration\Factory::manager_with_db_delta('acme_migrations', $wpdb);
+// $wpdb is optional — falls back to the global wpdb instance.
+
+// To get just the log manager without a Migration_Manager:
+$log = PinkCrab\DB_Migration\Factory::migration_log('acme_migrations');
 ```
 
 > See [Log Manager](log-manager.md) for details about `$migration_log_key`
@@ -119,4 +124,6 @@ $migrations->seed_tables('bar_table', 'foo_table'); // Would drop no tables.
 > ## migration_log( ): Migration_Log_Manager   
 > `@return PinkCrab\DB_Migration\Log\Migration_Log_Manager` 
 
-Returns access to the [Log Manager](log-manager.md)
+Returns access to the [Log Manager](log-manager.md).
+
+> A typo'd alias `migation_log()` (without the `r`) also exists for backward compatibility and is **deprecated** — use `migration_log()` in new code.
